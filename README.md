@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Sinouhe/compteWebApp.svg?branch=master)](https://travis-ci.org/Sinouhe/compteWebApp)
+
 # CompteWebApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
