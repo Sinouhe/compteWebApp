@@ -2,6 +2,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/74a6eddd9c004642942882e880f0b5b2)](https://www.codacy.com/app/Sinouhe/compteWebApp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sinouhe/compteWebApp&amp;utm_campaign=Badge_Grade)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/Sinouhe/compteWebApp/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Sinouhe/compteWebApp?targetFile=package.json)
+
 # CompteWebApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
