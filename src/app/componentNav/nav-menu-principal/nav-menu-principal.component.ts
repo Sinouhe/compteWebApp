@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavMenuPrincipalComponent implements OnInit {
 
-  constructor() { }
+  private _title: string;
+
+  constructor() {
+    this._title = 'CompteWebApp';
+  }
 
   ngOnInit() {
+  }
+
+  public get title(): string {
+    return this._title;
   }
 
 }
