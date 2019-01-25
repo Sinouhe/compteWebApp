@@ -12,6 +12,7 @@ export class AuthFormConnectionComponent implements OnInit {
 
   private _isAuthenticated: boolean;
   private _errorConnexion: string;
+  private _welcomeMessage: string;
 
   constructor(private _serviceAuthentificationService: ServiceAuthentificationService,
               private _serviceToastMessageService: ServiceToastMessageService) { }
@@ -32,8 +33,11 @@ export class AuthFormConnectionComponent implements OnInit {
     return this._errorConnexion;
   }
 
+  public get welcomeMessage() {
+    return this._welcomeMessage;
+  }
+
   public login(loginForm: any): void {
-    console.log(loginForm);
     this._serviceAuthentificationService.login(loginForm)
                     .subscribe(
                       (data) => this.handleLoginSuccess(data),
@@ -42,21 +46,22 @@ export class AuthFormConnectionComponent implements OnInit {
   }
 
   private handleLoginSuccess(data: any): void {
-    console.log('success ' + JSON.stringify(data));
     if (data.status === 'success') {
       this._isAuthenticated = true;
       this._errorConnexion = '';
       localStorage.setItem(environment.authTokenName, JSON.stringify(data.result));
+      const decodedToken = this._serviceAuthentificationService.decodeTokken(data.result);
+      this._serviceToastMessageService.afficheMessage(environment.valid, `Bonjour ${decodedToken.name}.`);
+      this._welcomeMessage = `Bonjour ${decodedToken.name}.`;
     } else if (data.status === 'error') {
       this._errorConnexion = data.result;
       this._serviceToastMessageService.subject.next({texte: data.result});
+      this._serviceToastMessageService.afficheMessage(environment.alert, data.result);
     } else {
       this._errorConnexion = `Erreur inconnu - ${data.result}`;
     }
   }
 
-  private handleLoginError(data): void {
-    console.log(`error ${JSON.stringify(data)}`);
-  }
+  private handleLoginError(data): void { }
 
 }

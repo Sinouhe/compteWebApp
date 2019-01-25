@@ -24,7 +24,7 @@ module.exports = (auth) => {
             console.log(req.body)
             if(email === fakeUser.email && password === fakeUser.password){
                 delete req.body.password;
-                const token = jwt.sign({iss: config.rootAPI , role: 'admin', email: email, name: 'Sinouhé'}, config.secret );
+                const token = jwt.sign({iss: config.rootAPI , role: 'admin', email: email, name: 'Sinouhé_FakeUser'}, config.secret );
                 res.json(success(token));
             }else{
                 res.json(error('identifiants incorrects'));

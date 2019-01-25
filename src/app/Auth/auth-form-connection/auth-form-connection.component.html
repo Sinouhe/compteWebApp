@@ -29,13 +29,12 @@
                           required>
                 </div>
                 <button type="submit" class="btn btn-success" [disabled]=loginForm.invalid>connection</button>
-                {{_errorConnexion}}
               </form>
           </div>
         </div>
       </div>
-      <div nfIf=isAuthenticated>
-        <p>Bonjour, ....</p>
+      <div *ngIf="isAuthenticated">
+        <p>{{welcomeMessage}}</p>
       </div>
     </div>
   </div>

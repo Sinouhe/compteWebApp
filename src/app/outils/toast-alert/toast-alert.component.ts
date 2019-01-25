@@ -15,7 +15,7 @@ export class ToastAlertComponent implements OnInit {
   ngOnInit() {
     this._serviceToastMessageService.subject.subscribe(
                                                     (data) => {
-                                                      this._texte = data.texte;
+                                                      this._texte = data;
                                                     },
                                                     (error) => {
                                                       console.log(error);
