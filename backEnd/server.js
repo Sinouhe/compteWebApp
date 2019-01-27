@@ -5,6 +5,7 @@ const morganImport = require ('morgan');
 const jwt = require('jsonwebtoken');
 const config = require("./config");
 const routes = require('./routes/routesAuth');
+const mongoose = require('mongoose');
 
 /*************
  * MiddleWare *
@@ -31,4 +32,16 @@ const port = config.port;
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
+
+    mongoose.connect('mongodb://localhost/compteWebAppdatabase',{
+        useNewUrlParser:true,
+    });
+
+    mongoose.connection
+        .once('open',() => {
+            console.log('connection mongoose établie');
+        }).on('error',(error) => {
+            console.log('Erreur durant la connextion',error);      
+        })
+
 });

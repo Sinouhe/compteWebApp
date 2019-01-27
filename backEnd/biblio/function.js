@@ -1,29 +1,32 @@
-exports.success = (data) => {
+exports.success = (message, data) => {
     return {
         status: 'success',
-        result: data
+        result: data,
+        message: message
     }
-} 
+};
 
-exports.error = (data) => {
+exports.error = (message, data) => {
     return {
         status: 'error',
-        result: data
+        result: data,
+        message: message
     }
-}
+};
 
 exports.logeur = (data) => {
-    console.log(data)
-}
+    console.log(data);
+};
 
-exports.isErr = (err) =>{
+exports.isErr = (err) => {
     return err instanceof Error;
-}
+};
 
 exports.checkAndChange = (obj) => {
-    if (this.isErr(obj)){
+    if (this.isErr(obj)) {
         return this.error(obj.message);
-    }else{
+    } else {
         return this.success(obj);
     }
-}
+};
+

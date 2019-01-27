@@ -1,6 +1,15 @@
 <div class="container">
     <app-nav-menu-principal></app-nav-menu-principal>
-    <app-auth-form-connection></app-auth-form-connection>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="jumbotron">
+                <h1 class="display-4">Connection</h1>
+                <p class="lead">Merci de saisir votre Email et password pour vous connecter.</p>
+                <hr class="my-4">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+    <app-toast-alert></app-toast-alert>
 </div>
-<app-toast-alert></app-toast-alert>
 
