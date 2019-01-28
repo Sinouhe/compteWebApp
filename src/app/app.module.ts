@@ -15,7 +15,13 @@ import { ServiceToastMessageService } from './services/service-toast-message.ser
 import { ServiceAuthentificationService } from './services/service-authentification.service';
 import { AuthFormCreationCompteComponent } from './Auth/authFormCreationCompte/auth-form-creation-compte.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatIconModule } from '@angular/material';
+import {  MatFormFieldModule,
+          MatInputModule,
+          MatButtonModule,
+          MatSelectModule,
+          MatIconModule,
+          MatExpansionModule, MatDividerModule } from '@angular/material';
+import { AuthProfilDisplayComponent } from './Auth/authProfileDisplay/auth-profil-display.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +31,8 @@ import { MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, M
     NavMenuPrincipalComponent,
     ToastAlertComponent,
     PageNotFoundComponent,
-    AuthFormCreationCompteComponent
+    AuthFormCreationCompteComponent,
+    AuthProfilDisplayComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +45,9 @@ import { MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, M
     MatButtonModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    MatExpansionModule,
+    MatDividerModule
   ],
   providers: [
     ServiceModalBootstrapService,

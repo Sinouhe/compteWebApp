@@ -14,7 +14,8 @@ const userSchema = new schema({
         type: String,
         required: [true,'l\'email est requis'],
         unique: true,
-        dropDups: true
+        dropDups: true,
+        lowercase: true
     },
     password: {
         type: String,

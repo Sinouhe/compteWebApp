@@ -27,9 +27,8 @@ module.exports = {
             res.send(error(`Information(s) manquante(s) nom : ${nom}, prénom: ${prenom}, email: ${email}.`));
         }
     },
-    getUserByEmail(req, res){
-        console.log(req.body)
-        const email = req.body.email;
+    login(req, res){
+        const email = req.body.email.toLowerCase();
         const password = req.body.password
         if(password && email){
             userImport.findOne({email})
@@ -45,7 +44,7 @@ module.exports = {
                             res.send(error('Mauvais mot de pase.'));    
                         }
                     }else{
-                        res.send(error('Aucun utilisateur avec l\Email : ' + email));
+                        res.send(error('Aucun utilisateur avec l\'Email : ' + email));
                     }
                 }).catch((err) => {
                     res.send(error(err.message));
@@ -53,5 +52,28 @@ module.exports = {
         }else{
             res.send(error(`Information(s) manquante(s) nom : email: ${email}, password: ${password}.`));
         }
+    },
+    getUserByEmail(req, res){
+        const email = req.body.email.toLowerCase();
+        if(email){
+            userImport.findOne({'email': email})
+                .then((userResult) => {
+                    if(userResult){
+                        userResult.password = '';
+                        const token = jwt.sign({iss: config.rootAPI, 
+                                                email: userResult.email, 
+                                                prenom: userResult.prenom,
+                                                nom: userResult.nom}, config.secret );
+                        res.json(success(token,userResult));
+                    }else{
+                        res.send(error('Aucun utilisateur avec l\'Email : ' + email));
+                    }
+                }).catch((err) => {
+                    res.send(error(err.message));
+                });
+        }else{
+            res.send(error(`Information(s) manquante(s) nom : email: ${email}.`));
+        }
     }
+
 }

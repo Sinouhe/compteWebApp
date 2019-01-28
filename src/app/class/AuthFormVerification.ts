@@ -4,10 +4,8 @@ import * as EmailValidator from 'email-validator';
 export class AuthFormVerification {
 
     private static _sMessageError = '';
-    private _emailValidator = new FormControl('', [Validators.required, Validators.email]);
-    private _passwordValidator = new FormControl('', [Validators.required,
-                                                    Validators.maxLength(30),
-                                                    Validators.minLength(4)]);
+    private _emailValidator: FormControl;
+    private _passwordValidator: FormControl;
 
     public static get sMessageError(): string {
         return this._sMessageError;
@@ -47,11 +45,15 @@ export class AuthFormVerification {
         this._sMessageError = '';
     }
 
-    public get emailValidator(): FormControl {
+    public getEmailValidator(p_sStartValue: string = ''): FormControl {
+        this._emailValidator = new FormControl(p_sStartValue, [Validators.required, Validators.email]);
         return this._emailValidator;
     }
 
-    public get passwordValidator(): FormControl {
+    public getPasswordValidator(p_sStartValue: string = ''): FormControl {
+        this._passwordValidator = new FormControl(p_sStartValue, [Validators.required,
+                                                        Validators.maxLength(30),
+                                                        Validators.minLength(4)]);
         return this._passwordValidator;
     }
 

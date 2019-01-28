@@ -16,4 +16,16 @@ export class User {
         return this._sEmail;
     }
 
+    public get nom(): string {
+        return this._sNom;
+    }
+
+    public get prenom(): string {
+        return this._sPrenom;
+    }
+
+    public get password(): string {
+        return this._sPassword;
+    }
+
 }

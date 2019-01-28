@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { ServiceToastMessageService } from '../../services/service-toast-message.service';
 import { User } from 'src/app/class/user';
 import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-auth-form-connection',
@@ -31,11 +31,15 @@ export class AuthFormConnectionComponent implements OnInit {
   ngOnInit() {
     this._hidePassword = true;
     this._formLogin = this._formBuilder.group({
-      email: this._authFormVerification.emailValidator,
-      password: this._authFormVerification.passwordValidator
+      email: this._authFormVerification.getEmailValidator(),
+      password: this._authFormVerification.getPasswordValidator()
     });
-
+    if (this._serviceAuthentificationService.decodeTokken()) {
+      const decodedToken = this._serviceAuthentificationService.decodeTokken();
+      this._welcomeMessage = `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`;
+    }
     this._isAuthenticated = this._serviceAuthentificationService.isAuthenticated();
+    console.log('fin login');
   }
 
   public get authFormVerification(): AuthFormVerification {
@@ -78,11 +82,12 @@ export class AuthFormConnectionComponent implements OnInit {
     if (data.status === 'success') {
       this._isAuthenticated = true;
       this._errorConnexion = '';
-      localStorage.setItem(environment.authTokenName, data.message);
-      const decodedToken = this._serviceAuthentificationService.decodeTokken(data.message);
-      this._serviceAuthentificationService.user(new User(decodedToken.nom, decodedToken.prenom, decodedToken.email));
-      this._serviceToastMessageService.afficheMessage(environment.valid, `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`);
-      this._welcomeMessage = `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`;
+      this._serviceAuthentificationService.ConnectUser(data.message);
+      if (this._serviceAuthentificationService.decodeTokken()) {
+        const decodedToken = this._serviceAuthentificationService.decodeTokken();
+        this._welcomeMessage = `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`;
+      }
+      this._serviceToastMessageService.afficheMessage(environment.valid, this._welcomeMessage);
     } else if (data.status === 'error') {
       this._errorConnexion = data.result;
       this._serviceToastMessageService.subject.next({texte: data.result});

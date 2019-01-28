@@ -19,4 +19,11 @@ export class UserDAO {
                   }));
   }
 
+  public getUserByEmail(p_sEmail: string): Observable<any> {
+    return this._http.post(`${environment.urlBackEnd}/auth/getUserByEmail`, {'email': p_sEmail})
+                  .pipe(map((res) => {
+                    return res;
+                  }));
+  }
+
 }
