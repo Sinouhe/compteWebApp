@@ -1,0 +1,62 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        données du profil.
+      </mat-panel-title>
+        <mat-panel-description>
+          
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="_oFormProfil" (ngSubmit)="modifieProfil(_oFormProfil)">
+    <div class="row">
+      <div class="form-group col-lg-2" style="padding-top: 15px;">
+          Prénom : 
+      </div>
+      <div class="form-group col-lg-3">
+        <mat-form-field>
+          <input  matInput 
+                  [placeholder]="_oUser._sNom" 
+                  (change)="setSaveProfil(_oFormProfil.value)"
+                  name="nom" 
+                  formControlName="nom"
+                  >
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-lg-2" style="padding-top: 15px;">
+          Nom : 
+      </div>
+      <div class="form-group col-lg-3">
+        <mat-form-field>
+          <input  matInput 
+                  [placeholder]="_oUser._sPrenom" 
+                  (change)="setSaveProfil(_oFormProfil.value)"
+                  name="prenom" 
+                  formControlName="prenom"
+                  >
+        </mat-form-field>
+      </div>
+    </div>
+    <button   type="submit" 
+              class="btn btn-success" 
+              [ngStyle]="{'display': _bProfilChange === true ? 'inline' : 'none' }"
+              >
+            Sauvegarde les modification
+        </button>
+    </form>
+  </mat-expansion-panel>
+  <mat-expansion-panel (opened)="_bPanelOpenState = true"
+                       (closed)="_bPanelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Self aware panel
+      </mat-panel-title>
+      <mat-panel-description>
+        Currently I am {{_bPanelOpenState ? 'open' : 'closed'}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>I'm visible because I am open</p>
+  </mat-expansion-panel>
+</mat-accordion>
