@@ -11,7 +11,7 @@
     <form [formGroup]="_oFormProfil" (ngSubmit)="modifieProfil(_oFormProfil)">
     <div class="row">
       <div class="form-group col-lg-2" style="padding-top: 15px;">
-          Prénom : 
+          Nom : 
       </div>
       <div class="form-group col-lg-3">
         <mat-form-field>
@@ -26,7 +26,7 @@
     </div>
     <div class="row">
       <div class="form-group col-lg-2" style="padding-top: 15px;">
-          Nom : 
+          Prénom : 
       </div>
       <div class="form-group col-lg-3">
         <mat-form-field>
@@ -38,13 +38,16 @@
                   >
         </mat-form-field>
       </div>
-    </div>
-    <button   type="submit" 
-              class="btn btn-success" 
-              [ngStyle]="{'display': _bProfilChange === true ? 'inline' : 'none' }"
-              >
-            Sauvegarde les modification
+      <div class="form-group offset-lg-4 col-lg-3">
+        <button   type="submit" 
+                  mat-button 
+                  class="btnSaveProfilChange"
+                  [ngStyle]="{'display': _bProfilChange === true ? 'inline' : 'none' }"
+                  >
+          save change
         </button>
+      </div>
+    </div>
     </form>
   </mat-expansion-panel>
   <mat-expansion-panel (opened)="_bPanelOpenState = true"

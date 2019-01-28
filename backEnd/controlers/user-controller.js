@@ -74,6 +74,32 @@ module.exports = {
         }else{
             res.send(error(`Information(s) manquante(s) nom : email: ${email}.`));
         }
-    }
+    },
+    changeUserByEmail(req, res){
+        const nom = req.body._sNom;
+        const prenom = req.body._sPrenom;
+        const email = req.body._sEmail;
+        if(nom && prenom && email){
+            userImport.findOne({'email': email})
+                .then((userResult) => {
+                    if(userResult){
+                        userResult.set({'nom': nom, 'prenom': prenom})
+                        userResult.save()
+                            .then(() => {
+                                res.send(success('Profil modifé.', user));
+                            })
+                            .catch((err) => {
+                                res.send(error(err.message, user));
+                            })
+                    }else{
+                        res.send(error('Aucun utilisateur avec l\'Email : ' + email));
+                    }
+                }).catch((err) => {
+                    res.send(error(err.message));
+                });
+        }else{
+            res.send(error(`Information(s) manquante(s) nom : email: ${email}.`));
+        }
+    },
 
 }

@@ -4,6 +4,7 @@ import { User } from '../../class/user';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
 import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
+import { UserDAO } from 'src/app/class/user_DAO';
 
 @Component({
   selector: 'app-auth-profil-display',
@@ -20,7 +21,8 @@ export class AuthProfilDisplayComponent implements OnInit {
 
   constructor(private _serviceAuthentificationService: ServiceAuthentificationService,
               private _serviceToastMessageService: ServiceToastMessageService,
-              private _formBuilder: FormBuilder) {
+              private _formBuilder: FormBuilder,
+              private _User_DAO: UserDAO) {
     this._oAuthFormVerification = new AuthFormVerification();
   }
 
@@ -31,6 +33,7 @@ export class AuthProfilDisplayComponent implements OnInit {
 
     this._oFormProfil = this._formBuilder.group({
       email: this._oAuthFormVerification.getEmailValidator(),
+      // pour le momment, je ne souhaite pas modifier le pasword du profil
       // password: this._oAuthFormVerification.getPasswordValidator(this._oUser.password),
       prenom: '',
       nom: ''
@@ -50,8 +53,6 @@ export class AuthProfilDisplayComponent implements OnInit {
   }
 
   public setSaveProfil(p_oFormValue): void {
-    console.log(p_oFormValue);
-    console.log(this._oUser);
     if (p_oFormValue.email === '' && p_oFormValue.nom === '' && p_oFormValue.prenom === '') {
       this._bProfilChange = false;
     } else if (  (p_oFormValue.email !== this._oUser.email && p_oFormValue.email !== '')
@@ -64,8 +65,18 @@ export class AuthProfilDisplayComponent implements OnInit {
   }
 
   public modifieProfil(p_oForm): void {
-    console.log(p_oForm.value);
-    console.log(this._oUser);
+    // j'enregistre les modification du profil utilisateur
+    if (p_oForm.value.prenom !== '') {
+      p_oForm.value.prenom = this._oUser.prenom;
+    }
+    if (p_oForm.value.nom === '') {
+      p_oForm.value.nom = this._oUser.nom;
+    }
+    p_oForm.value.email = this._oUser.email;
+    // one enregistre
+    const oUserPourModification = new User(p_oForm.value.nom, p_oForm.value.prenom, p_oForm.value.email);
+    this._User_DAO.modifieUn(oUserPourModification);
+
   }
 
 }

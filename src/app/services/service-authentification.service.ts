@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 import { User } from '../class/user';
 import { UserDAO } from 'src/app/class/user_DAO';
 import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
-import { connect } from 'http2';
+import { async } from '@angular/core/testing';
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,26 +26,8 @@ export class ServiceAuthentificationService implements OnInit {
     this._sToken = localStorage.getItem(environment.authTokenName);
     // si token on charge l'tilisateur
     if (this._sToken) {
-      this._oDecodedToken = jwtDecode(this._sToken);
-      console.log('début log');
-      this._oUserDAO.getUserByEmail(this._oDecodedToken.email)
-                    .subscribe(
-                      (data) => {
-                        if (data.status === 'success') {
-                          console.log('connect');
-                          this._oUser = new User(data.result.nom, data.result.prenom, data.result.email);
-                          this._bIsAuthenticated = true;
-                        } else {
-                          // si erreur on supprime le token enregistré
-                          this.unConnectUser();
-                          this._oServiceToastMessageService.afficheMessage(environment.alert, data.message);
-                        }
-                      },
-                      (error) => {
-                        console.log('data service ' + JSON.stringify(error));
-                        this.unConnectUser();
-                        this._oServiceToastMessageService.afficheMessage(environment.alert, error.message);
-                      });
+      // this.lanceConnectionBdd();
+      this.lanceConnectionToken();
     }
   }
 
@@ -89,8 +72,39 @@ export class ServiceAuthentificationService implements OnInit {
     this._sToken = p_sToken;
     this._oDecodedToken = jwtDecode(this._sToken);
     localStorage.setItem(environment.authTokenName, this._sToken);
-    this._oUser = new User(p_sToken.nom, p_sToken.prenom, p_sToken.email);
+    this._oUser = new User(this._oDecodedToken.nom, this._oDecodedToken.prenom, this._oDecodedToken.email);
     this._bIsAuthenticated = true;
   }
+
+
+  async lanceConnectionBdd() {
+    this._oDecodedToken = jwtDecode(this._sToken);
+    console.log('début log');
+    await this._oUserDAO.getUserByEmail(this._oDecodedToken.email)
+                  .subscribe(
+                    (data) => {
+                      if (data.status === 'success') {
+                        console.log('connect');
+                        this._oUser = new User(data.result.nom, data.result.prenom, data.result.email);
+                        this._bIsAuthenticated = true;
+                      } else {
+                        // si erreur on supprime le token enregistré
+                        this.unConnectUser();
+                        this._oServiceToastMessageService.afficheMessage(environment.alert, data.message);
+                      }
+                    },
+                    (error) => {
+                      console.log('data service ' + JSON.stringify(error));
+                      this.unConnectUser();
+                      this._oServiceToastMessageService.afficheMessage(environment.alert, error.message);
+                    });
+  }
+
+  async lanceConnectionToken() {
+    console.log('début log');
+    this.ConnectUser(this._sToken);
+    console.log('connect');
+  }
+
 
 }
