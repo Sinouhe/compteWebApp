@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
 import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
 import { UserDAO } from 'src/app/class/user_DAO';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-auth-profil-display',
@@ -23,25 +24,32 @@ export class AuthProfilDisplayComponent implements OnInit {
               private _serviceToastMessageService: ServiceToastMessageService,
               private _formBuilder: FormBuilder,
               private _User_DAO: UserDAO) {
+
+    this._oUser = this._serviceAuthentificationService.getUser();
     this._oAuthFormVerification = new AuthFormVerification();
+    this._serviceAuthentificationService.subjectUser
+                                        .subscribe(
+                                          (data) => {
+                                            this._oUser = data;
+                                            console.log(this._oUser);
+                                          },
+                                          (error) => {
+                                            this._serviceToastMessageService.afficheMessage(environment.alert,
+                                                                                            error.message);
+                                          });
   }
 
   ngOnInit() {
-    this._oUser = this._serviceAuthentificationService.getUser();
+
     this._bPanelOpenState = false;
     this._bProfilChange = false;
 
     this._oFormProfil = this._formBuilder.group({
       email: this._oAuthFormVerification.getEmailValidator(),
-      // pour le momment, je ne souhaite pas modifier le pasword du profil
-      // password: this._oAuthFormVerification.getPasswordValidator(this._oUser.password),
       prenom: '',
       nom: ''
     });
-  }
 
-  public get user(): User {
-    return this._oUser;
   }
 
   public get bPanelOpenState(): boolean {
@@ -73,7 +81,7 @@ export class AuthProfilDisplayComponent implements OnInit {
       p_oForm.value.nom = this._oUser.nom;
     }
     p_oForm.value.email = this._oUser.email;
-    // one enregistre
+    // on enregistre
     const oUserPourModification = new User(p_oForm.value.nom, p_oForm.value.prenom, p_oForm.value.email);
     this._User_DAO.modifieUn(oUserPourModification);
 

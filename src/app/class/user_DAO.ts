@@ -27,10 +27,10 @@ export class UserDAO {
   }
 
   public modifieUn(p_oUser: User): Observable<any> {
-    return this._http.post(`${environment.urlBackEnd}/auth/saveUser`, p_oUser)
-    .pipe(map((res) => {
-      return res;
-    }));
+    return this._http.post(`${environment.urlBackEnd}/auth/changeUserByEmail`, p_oUser)
+      .pipe(map((res) => {
+        return res;
+      }));
   }
 
 }

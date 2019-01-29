@@ -16,7 +16,6 @@ export class AuthFormConnectionComponent implements OnInit {
   private _isAuthenticated: boolean;
   private _errorConnexion: string;
   private _welcomeMessage: string;
-  private _user: User;
   private _hidePassword: boolean;
   private _authFormVerification: AuthFormVerification;
   private _formLogin: FormGroup;
@@ -26,9 +25,20 @@ export class AuthFormConnectionComponent implements OnInit {
               private _formBuilder: FormBuilder) {
 
     this._authFormVerification = new AuthFormVerification();
+    this._serviceAuthentificationService.subjectUser.subscribe(
+                                              (data) => {
+                                                if (data) {
+                                                  this._isAuthenticated = true;
+                                                } else {
+                                                  this._isAuthenticated = false;
+                                                }
+                                              },
+                                              (error) =>  this.handleLoginError(error)
+                                            );
   }
 
   ngOnInit() {
+    this._isAuthenticated = this._serviceAuthentificationService.isAuthenticated();
     this._hidePassword = true;
     this._formLogin = this._formBuilder.group({
       email: this._authFormVerification.getEmailValidator(),
@@ -39,7 +49,7 @@ export class AuthFormConnectionComponent implements OnInit {
       this._welcomeMessage = `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`;
     }
     this._isAuthenticated = this._serviceAuthentificationService.isAuthenticated();
-    console.log('fin login');
+
   }
 
   public get authFormVerification(): AuthFormVerification {
@@ -54,9 +64,6 @@ export class AuthFormConnectionComponent implements OnInit {
     return this._hidePassword;
   }
 
-  public get user(): User  {
-    return this._user;
-  }
 
   public get isAuthenticated(): boolean {
     return this._isAuthenticated;
@@ -82,7 +89,7 @@ export class AuthFormConnectionComponent implements OnInit {
     if (data.status === 'success') {
       this._isAuthenticated = true;
       this._errorConnexion = '';
-      this._serviceAuthentificationService.ConnectUser(data.message);
+      this._serviceAuthentificationService.lanceConnectionToken(data.message);
       if (this._serviceAuthentificationService.decodeTokken()) {
         const decodedToken = this._serviceAuthentificationService.decodeTokken();
         this._welcomeMessage = `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`;
