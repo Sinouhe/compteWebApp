@@ -28,4 +28,16 @@ export class User {
         return this._sPassword;
     }
 
+    public set prenom(p_sPrenom) {
+        this._sPrenom = p_sPrenom;
+    }
+
+    public set nom(p_sNom) {
+        this._sNom = p_sNom;
+    }
+
+    public set email(p_sEmail) {
+        this._sEmail = p_sEmail;
+    }
+
 }

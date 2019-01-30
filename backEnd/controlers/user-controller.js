@@ -86,7 +86,11 @@ module.exports = {
                         userResult.set({'nom': nom, 'prenom': prenom})
                         userResult.save()
                             .then(() => {
-                                res.send(success('Profil modifé.', user));
+                                const token = jwt.sign({iss: config.rootAPI, 
+                                    email: userResult.email, 
+                                    prenom: userResult.prenom,
+                                    nom: userResult.nom}, config.secret );
+                                res.send(success('Profil modifé.', token));
                             })
                             .catch((err) => {
                                 res.send(error(err.message, user));

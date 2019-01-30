@@ -20,7 +20,6 @@ export class ServiceAuthentificationService implements OnInit {
   private _oDecodedToken: any;
   private _bIsAuthenticated: boolean;
   private _oSubjectUser: Subject<User>;
-  private _bUserIsReady: boolean;
   private _oSubjectServiceReady: Subject<boolean>;
 
   constructor(private _ohttp: HttpClient,
@@ -118,6 +117,15 @@ export class ServiceAuthentificationService implements OnInit {
                               this._oServiceToastMessageService.afficheMessage(environment.alert, error.message);
                               this._oSubjectServiceReady.next(true);
                             });
+  }
+
+  public changeUser(p_oUser: User, p_sToken: string): void {
+    this._sToken = p_sToken;
+    this._oDecodedToken = jwtDecode(this._sToken);
+    localStorage.setItem(environment.authTokenName, this._sToken);
+    this._oUser = p_oUser;
+    // on avertit les autres modules
+    this._oSubjectUser.next(this._oUser);
   }
 
 }

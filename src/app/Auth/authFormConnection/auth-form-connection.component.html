@@ -40,5 +40,5 @@
 </ng-template>
 <ng-template #connected>
   <p>{{welcomeMessage}}</p>
-  <app-auth-profil-display></app-auth-profil-display>
+  <app-auth-profil-display (userChanged)="onUserChanged($event)"></app-auth-profil-display>
 </ng-template>

@@ -31,7 +31,8 @@ module.exports = (auth) => {
         }
     })
     .post('/changeUserByEmail', (req,res) => {
-        if(req.body){
+        console.log(req.body)
+        if(req.body){         
             userController.changeUserByEmail(req,res);
         }else{
             res.json(error('données manquantes'));

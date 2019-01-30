@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ServiceAuthentificationService } from 'src/app/services/service-authentification.service';
 import { User } from '../../class/user';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -19,6 +19,8 @@ export class AuthProfilDisplayComponent implements OnInit {
   private _bProfilChange: boolean;
   private _oFormProfil: FormGroup;
   private _oAuthFormVerification: AuthFormVerification;
+  @Output() userChanged = new EventEmitter<User>();
+
 
   constructor(private _serviceAuthentificationService: ServiceAuthentificationService,
               private _serviceToastMessageService: ServiceToastMessageService,
@@ -72,19 +74,34 @@ export class AuthProfilDisplayComponent implements OnInit {
     }
   }
 
-  public modifieProfil(p_oForm): void {
-    // j'enregistre les modification du profil utilisateur
-    if (p_oForm.value.prenom !== '') {
-      p_oForm.value.prenom = this._oUser.prenom;
+  public modifieProfil(p_oForm: any): void {
+    // j'enregistre les modifications du profil utilisateur
+    const oUserPourModification = new User();
+    if (p_oForm.value.prenom === '') {
+      oUserPourModification.prenom = this._oUser.prenom;
+    } else {
+      oUserPourModification.prenom = p_oForm.value.prenom;
     }
     if (p_oForm.value.nom === '') {
-      p_oForm.value.nom = this._oUser.nom;
+      oUserPourModification.nom = this._oUser.nom;
+    } else {
+      oUserPourModification.nom = p_oForm.value.nom;
     }
-    p_oForm.value.email = this._oUser.email;
+    oUserPourModification.email = this._oUser.email;
     // on enregistre
-    const oUserPourModification = new User(p_oForm.value.nom, p_oForm.value.prenom, p_oForm.value.email);
-    this._User_DAO.modifieUn(oUserPourModification);
-
+    this._User_DAO.modifieUn(oUserPourModification).subscribe(
+                                              (data) => {
+                                                if (data.status === 'success') {
+                                                  this._serviceAuthentificationService.changeUser(oUserPourModification, data.result);
+                                                  this.userChanged.emit(this._oUser);
+                                                  this._serviceToastMessageService.afficheMessage(environment.valid, data.message);
+                                                } else {
+                                                  this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
+                                                }
+                                              },
+                                              (error) => {
+                                                this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
+                                              });
   }
 
 }

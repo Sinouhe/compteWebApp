@@ -14,7 +14,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class AuthFormConnectionComponent implements OnInit {
 
   private _isAuthenticated: boolean;
-  private _errorConnexion: string;
   private _welcomeMessage: string;
   private _hidePassword: boolean;
   private _authFormVerification: AuthFormVerification;
@@ -69,10 +68,6 @@ export class AuthFormConnectionComponent implements OnInit {
     return this._isAuthenticated;
   }
 
-  public get errorConnexion(): string {
-    return this._errorConnexion;
-  }
-
   public get welcomeMessage(): string {
     return this._welcomeMessage;
   }
@@ -88,7 +83,6 @@ export class AuthFormConnectionComponent implements OnInit {
   private handleLoginSuccess(data: any): void {
     if (data.status === 'success') {
       this._isAuthenticated = true;
-      this._errorConnexion = '';
       this._serviceAuthentificationService.lanceConnectionToken(data.message);
       if (this._serviceAuthentificationService.decodeTokken()) {
         const decodedToken = this._serviceAuthentificationService.decodeTokken();
@@ -96,11 +90,10 @@ export class AuthFormConnectionComponent implements OnInit {
       }
       this._serviceToastMessageService.afficheMessage(environment.valid, this._welcomeMessage);
     } else if (data.status === 'error') {
-      this._errorConnexion = data.result;
-      this._serviceToastMessageService.subject.next({texte: data.result});
-      this._serviceToastMessageService.afficheMessage(environment.alert, data.result);
+      this._serviceToastMessageService.subject.next({texte: data.message});
+      this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
     } else {
-      this._errorConnexion = `Erreur inconnu - ${data.result}`;
+      this._serviceToastMessageService.afficheMessage(environment.alert, `Erreur inconnu - ${data.message}`);
     }
   }
 
@@ -116,6 +109,10 @@ export class AuthFormConnectionComponent implements OnInit {
 
   public changePassVisibility(): void {
     this._hidePassword = ! this._hidePassword;
+  }
+
+  public onUserChanged(p_oUser: User): void {
+    this._welcomeMessage = `Bonjour ${p_oUser.prenom} ${p_oUser.nom}.`;
   }
 
 }
