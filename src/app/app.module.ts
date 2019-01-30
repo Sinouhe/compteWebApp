@@ -22,6 +22,7 @@ import {  MatFormFieldModule,
           MatIconModule,
           MatExpansionModule, MatDividerModule } from '@angular/material';
 import { AuthProfilDisplayComponent } from './Auth/authProfileDisplay/auth-profil-display.component';
+import { TypeDepenseComponent } from './typeDepense/listTypeDepense/type-depense.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AuthProfilDisplayComponent } from './Auth/authProfileDisplay/auth-profi
     ToastAlertComponent,
     PageNotFoundComponent,
     AuthFormCreationCompteComponent,
-    AuthProfilDisplayComponent
+    AuthProfilDisplayComponent,
+    TypeDepenseComponent
   ],
   imports: [
     BrowserModule,

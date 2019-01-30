@@ -4,11 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from './user';
 import { Observable } from 'rxjs';
+import { DAOinterface } from './DAOinterface';
 
 @Injectable({
     providedIn: 'root'
   })
-export class UserDAO {
+export class UserDAO  implements DAOinterface {
 
   constructor(private _http: HttpClient) { }
 
@@ -31,6 +32,12 @@ export class UserDAO {
                       .pipe(map((res: any) => {
                         return res;
                       }));
+  }
+
+  public chargeTous(): Observable<any> {
+    // méthode à faire
+    alert('méthode TypeDepenseDAO:chargeTous appellé sns avoir été définit');
+    return null;
   }
 
 }

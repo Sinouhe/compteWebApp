@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const morganImport = require ('morgan');
 const jwt = require('jsonwebtoken');
 const config = require("./config");
-const routes = require('./routes/routesAuth');
+const routesAuth = require('./routes/routesAuth');
+const routesData = require('./routes/routesData');
 const mongoose = require('mongoose');
 
 /*************
@@ -22,11 +23,14 @@ app.use((req, res, next) => {
 app.use(morganImport('dev'));
 
 const auth = express.Router();
+const data = express.Router();
 
-routes(auth);
+routesAuth(auth);
+routesData(data);
 
 //app.use('/api',api);
 app.use(`${config.rootAPI}/auth`,auth);
+app.use(`${config.rootAPI}/data`,data);
 
 const port = config.port;
 

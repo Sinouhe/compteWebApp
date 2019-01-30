@@ -1,13 +1,12 @@
-const configImport = require("../config");
 const {success,error} = require('../biblio/function');
-
-
 const userController = require('../controlers/user-controller')
 
 /**************************
  * export des routes Auth *
  **************************/
 module.exports = (auth) => {
+
+    // Routes pour auth
 
     auth.post('/login', (req,res) => {
         if(req.body){
