@@ -9,7 +9,7 @@ import { DAOinterface } from './DAOinterface';
 @Injectable({
     providedIn: 'root'
   })
-export class UserDAO  implements DAOinterface {
+export class UserDAO {
 
   constructor(private _http: HttpClient) { }
 
@@ -32,12 +32,6 @@ export class UserDAO  implements DAOinterface {
                       .pipe(map((res: any) => {
                         return res;
                       }));
-  }
-
-  public chargeTous(): Observable<any> {
-    // méthode à faire
-    alert('méthode TypeDepenseDAO:chargeTous appellé sns avoir été définit');
-    return null;
   }
 
 }

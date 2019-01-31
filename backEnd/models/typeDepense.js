@@ -2,12 +2,18 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const typeDepenseSchema = new schema({
-    nom: {
+    sNom: {
         type: String,
-        required: [true, 'Le nom est requis']
+        required: [true, 'Le nom est requis'],
+        unique: true,
+        dropDups: true
     },
-    description: {
+    sDescription: {
         type: String
+    },
+    user: {
+        type: schema.Types.ObjectId,
+        ref: 'user'
     }
 });
 

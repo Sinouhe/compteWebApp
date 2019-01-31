@@ -38,7 +38,8 @@ module.exports = {
                             const token = jwt.sign({iss: config.rootAPI, 
                                                     email: userResult.email, 
                                                     prenom: userResult.prenom,
-                                                    nom: userResult.nom}, config.secret );
+                                                    nom: userResult.nom,
+                                                    id: userResult._id}, config.secret );
                             res.json(success(token));
                         }else{
                             res.send(error('Mauvais mot de pase.'));    

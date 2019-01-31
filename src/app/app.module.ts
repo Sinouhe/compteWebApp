@@ -20,9 +20,12 @@ import {  MatFormFieldModule,
           MatButtonModule,
           MatSelectModule,
           MatIconModule,
-          MatExpansionModule, MatDividerModule } from '@angular/material';
+          MatExpansionModule,
+          MatDividerModule,
+          MatTooltipModule } from '@angular/material';
 import { AuthProfilDisplayComponent } from './Auth/authProfileDisplay/auth-profil-display.component';
 import { TypeDepenseComponent } from './typeDepense/listTypeDepense/type-depense.component';
+import { TypeDepenseDAO } from './class/typeDepense_DAO.service';
 
 @NgModule({
   declarations: [
@@ -49,12 +52,14 @@ import { TypeDepenseComponent } from './typeDepense/listTypeDepense/type-depense
     MatSelectModule,
     MatIconModule,
     MatExpansionModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTooltipModule
   ],
   providers: [
     ServiceModalBootstrapService,
     ServiceToastMessageService,
-    ServiceAuthentificationService
+    ServiceAuthentificationService,
+    TypeDepenseDAO
   ],
   bootstrap: [AppComponent]
 })

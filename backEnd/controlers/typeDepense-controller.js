@@ -11,19 +11,42 @@ module.exports = {
             });
     },
     addOne(req,res){
-        const nom = req.body.nom;
-        const description = req.body.description;
+        console.log(req.body)
+        const nom = req.body.sNom;
+        const description = req.body.sDescription;
         if(nom){
-            const typeDepense = new typeDepenseImport({nom, description});
+            const typeDepense = new typeDepenseImport({sNom: nom, sDescription: description});
             typeDepense.save()
                 .then(() => {
                     res.send(success('typeDepense créé.', typeDepense));
                 })
                 .catch((err) => {
-                    res.send(error(err.message, typeDepense));
-                });
+                    // si erreur field unique
+                    if (err.name === 'MongoError' && err.code === 11000) {
+                        res.send(error('Ce nom est déjà utilisée', typeDepense));
+                      } else {
+                        res.send(error(err.message, typeDepense));
+                      } 
+                })
         }else{
             res.send(error(`Information(s) manquante(s) nom : ${nom}, description: ${description}.`));
+        }
+    },
+    modifyOne(req,res){
+        console.log(req.body)
+        const nom = req.body.sNom;
+        const description = req.body.sDescription;
+        const id = req.body._id;
+        if(nom && id){
+            typeDepenseImport.update({_id: id}, { $set: { sNom: nom, sDescription: description }})
+                .then(() => {
+                    res.send(success('typeDepense mis à jour.', typeDepense));
+                })
+                .catch((err) => {
+                    res.send(error(err.message, typeDepense));
+                })
+        }else{
+            res.send(error(`Information(s) manquante(s) nom : ${nom}, description: ${description}, id: ${id}.`));
         }
     },
 

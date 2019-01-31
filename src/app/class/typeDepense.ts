@@ -1,7 +1,10 @@
+import { identifierModuleUrl } from '@angular/compiler';
+
 export class TypeDepense {
 
     private _sNom: string;
     private _sDescription: string;
+    private _id: string;
 
     constructor(p_sNom: string = '', _sDescription: string = '') {
         this._sNom = p_sNom;
@@ -14,6 +17,10 @@ export class TypeDepense {
 
     public get sNom(): string {
         return this._sNom;
+    }
+
+    public get id(): string {
+        return this._id;
     }
 
     public set sDescription(p_sDescription) {

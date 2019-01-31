@@ -11,6 +11,13 @@ module.exports = (data) => {
     data.get('/typeDepense/all', (req, res) => {
         typeDepense.getAll(req, res);
     })
+    .post('/typeDepense/modifyOne', (req, res) => {
+        if(req.body){
+            typeDepense.modifyOne(req, res);
+        }else{
+            res.json(error('données manquantes'));
+        }
+    })
     .post('/typeDepense/addOne', (req, res) => {
         if(req.body){
             typeDepense.addOne(req, res);

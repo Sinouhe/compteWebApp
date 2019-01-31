@@ -4,7 +4,7 @@ import { ServiceAuthentificationService } from 'src/app/services/service-authent
 import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
 import { UserDAO } from 'src/app/class/user_DAO';
 import { environment } from 'src/environments/environment';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
 
 @Component({
