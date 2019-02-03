@@ -10,7 +10,7 @@ import { AuthFormConnectionComponent } from './Auth/authFormConnection/auth-form
 import { NavMenuPrincipalComponent } from './componentNav/nav-menu-principal/nav-menu-principal.component';
 import { ToastAlertComponent } from './outils/toast-alert/toast-alert.component';
 import { PageNotFoundComponent } from './router/pageNotFound/page-not-found/page-not-found.component';
-import { RoutesCompteWebAppModule } from './router/pageNotFound/routes-compte-web-app/routes-compte-web-app.module';
+import { RoutesCompteWebAppModule } from './router/routes-compte-web-app/routes-compte-web-app.module';
 import { ServiceToastMessageService } from './services/service-toast-message.service';
 import { ServiceAuthentificationService } from './services/service-authentification.service';
 import { AuthFormCreationCompteComponent } from './Auth/authFormCreationCompte/auth-form-creation-compte.component';
@@ -26,6 +26,7 @@ import {  MatFormFieldModule,
 import { AuthProfilDisplayComponent } from './Auth/authProfileDisplay/auth-profil-display.component';
 import { TypeDepenseComponent } from './typeDepense/listTypeDepense/type-depense.component';
 import { TypeDepenseDAO } from './class/typeDepense_DAO.service';
+import { DepenseFixeComponent } from './typeDepense/depense-fixe/depense-fixe.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TypeDepenseDAO } from './class/typeDepense_DAO.service';
     PageNotFoundComponent,
     AuthFormCreationCompteComponent,
     AuthProfilDisplayComponent,
-    TypeDepenseComponent
+    TypeDepenseComponent,
+    DepenseFixeComponent
   ],
   imports: [
     BrowserModule,

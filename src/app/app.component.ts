@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ServiceAuthentificationService } from './services/service-authentification.service';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+import { GestionTitreService } from './router/gestion-titre.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
   private _bLoadServiceReady: boolean;
   private _titre: string;
 
-  constructor(private _serviceAuthentificationService: ServiceAuthentificationService) {
+  constructor(private _serviceAuthentificationService: ServiceAuthentificationService,
+              private _gestionTitreService: GestionTitreService) {
     this._bLoadServiceReady = false;
     // quand l'user courant est chargé ou non si existant on charge la page
     this._serviceAuthentificationService.SubjectServiceReady.subscribe(
@@ -23,6 +25,14 @@ export class AppComponent implements OnInit {
                             });
     this._sousTitre = 'Bienvenue sure l\'application compteWebApp';
     this._titre = 'Bienvenue';
+    this._gestionTitreService.subjectGestionTitreAcceuil.subscribe(
+                            (data) => {
+                              this._titre = data;
+                            });
+    this._gestionTitreService.subjectGestionSousTitreAcceuil.subscribe(
+                              (data) => {
+                                this._sousTitre = data;
+                              });
   }
 
   ngOnInit() {

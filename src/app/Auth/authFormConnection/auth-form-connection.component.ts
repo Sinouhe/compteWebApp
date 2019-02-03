@@ -5,6 +5,7 @@ import { ServiceToastMessageService } from '../../services/service-toast-message
 import { User } from 'src/app/class/user';
 import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-form-connection',
@@ -21,7 +22,8 @@ export class AuthFormConnectionComponent implements OnInit {
 
   constructor(private _serviceAuthentificationService: ServiceAuthentificationService,
               private _serviceToastMessageService: ServiceToastMessageService,
-              private _formBuilder: FormBuilder) {
+              private _formBuilder: FormBuilder,
+              private _router: Router) {
 
     this._authFormVerification = new AuthFormVerification();
     this._serviceAuthentificationService.subjectUser.subscribe(
@@ -48,7 +50,6 @@ export class AuthFormConnectionComponent implements OnInit {
       this._welcomeMessage = `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`;
     }
     this._isAuthenticated = this._serviceAuthentificationService.isAuthenticated();
-
   }
 
   public get authFormVerification(): AuthFormVerification {
@@ -89,6 +90,7 @@ export class AuthFormConnectionComponent implements OnInit {
         this._welcomeMessage = `Bonjour ${decodedToken.prenom} ${decodedToken.nom}.`;
       }
       this._serviceToastMessageService.afficheMessage(environment.valid, this._welcomeMessage);
+      this._router.navigate(['/profil']);
     } else if (data.status === 'error') {
       this._serviceToastMessageService.subject.next({texte: data.message});
       this._serviceToastMessageService.afficheMessage(environment.alert, data.message);

@@ -11,28 +11,35 @@
     <div class="row">
       <div class="form-group col-lg-3">
         <mat-form-field>
-          <input matInput placeholder="nom de la dépense" id="nomAjoutDepense"> 
+          <input matInput placeholder="nom de la dépense" id="nomAjoutDepenseFixe"> 
         </mat-form-field>
       </div>
-      <div class="form-group col-lg-7">
-        <mat-form-field style='width: 100%'>
-          <input matInput placeholder="description de la dépense" id="descriptionAjoutDepense">
+      <div class="form-group col-lg-2">
+        <mat-form-field>
+          <input matInput placeholder="montant (€)" id="montantAjoutDepenseFixe"> 
         </mat-form-field>
       </div>
     </div>
-    <button (click)="AjouteListDepense();" class="btn btn-warning">Ajouter</button>  
+    <div class="row">
+      <div class="form-group col-lg-7">
+        <mat-form-field style='width: 100%'>
+          <input matInput placeholder="description de la dépense" id="descriptionAjoutDepenseFixe">
+        </mat-form-field>
+      </div>
+    </div>
+    <button (click)="AjouteDepenseFixe();" class="btn btn-warning">Ajouter</button>  
   </mat-expansion-panel>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        liste de vos type de dépense
+        liste de vos dépenses fixes
       </mat-panel-title>
       <mat-panel-description>
         
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div *ngFor="let itemDepense of _tab_sTypesDepense; let i=index">
-        <form [formGroup]="_oFormTypeDepense" (ngSubmit)="modifieTypeDepense(i, itemDepense._id, _oFormTypeDepense)">
+    <div *ngFor="let itemDepense of _tab_sDepenseFixe; let i=index">
+        <form [formGroup]="_oFormDepenseFixe" (ngSubmit)="modifieDepenseFixe(i, itemDepense._sId, _oFormDepenseFixe)">
             <div class="row">
               <div class="form-group col-lg-2" style="padding-top: 15px;">
                   Nom : 
@@ -41,12 +48,25 @@
                 <mat-form-field>
                   <input  matInput 
                           [placeholder]="itemDepense.sNom" 
-                          name="nom{{i}}"
-                          id="nom{{i}}"
+                          name="depenseFixeNom{{i}}"
+                          id="depenseFixeNom{{i}}"
                           formControlName="nom"
                           >
                 </mat-form-field>
-              </div>
+              </div>         
+              <div class="form-group col-lg-2" style="padding-top: 15px;">
+                  Montant : 
+              </div>       
+              <div class="form-group col-lg-3">
+                <mat-form-field>
+                    <input  matInput 
+                            [placeholder]="itemDepense.nMontant" 
+                            name="depenseFixeMontant{{i}}"
+                            id="depenseFixeMontant{{i}}"
+                            formControlName="montant"
+                            >
+                  </mat-form-field>
+                </div>
             </div>
             <div class="row">
               <div class="form-group col-lg-2" style="padding-top: 15px;">
@@ -56,8 +76,8 @@
                 <mat-form-field>
                   <input  matInput 
                           [placeholder]="itemDepense.sDescription" 
-                          name="description{{i}}"
-                          id="description{{i}}"
+                          name="depenseFixeDescription{{i}}"
+                          id="depenseFixeDescription{{i}}"
                           formControlName="description"
                           >
                 </mat-form-field>

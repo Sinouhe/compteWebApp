@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   urlBackEnd: 'http://localhost:4201/api/v1',
   urlBackEndTypeDpense: '/data/typeDepense/',
+  urlBackEndDepenseFixe: '/data/depenseFixe/',
   authTokenName: 'tokenAuth',
   alert: 'alert',
   info: 'info',

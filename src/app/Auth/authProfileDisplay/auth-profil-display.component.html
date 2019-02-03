@@ -51,14 +51,27 @@
     </div>
     </form>
   </mat-expansion-panel>
-  <mat-expansion-panel (opened)="_bPanelOpenState = true"
-                       (closed)="_bPanelOpenState = false">
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         Liste des dépenses
       </mat-panel-title>
+      <mat-panel-description>
+          
+      </mat-panel-description>
     </mat-expansion-panel-header>
     <app-type-depense></app-type-depense>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Liste des dépenses fixes
+      </mat-panel-title>
+      <mat-panel-description>
+          
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <app-depense-fixe></app-depense-fixe>
   </mat-expansion-panel>
 </mat-accordion>
 </div>

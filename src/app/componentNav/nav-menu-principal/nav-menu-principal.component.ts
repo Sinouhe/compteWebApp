@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceAuthentificationService } from 'src/app/services/service-authentification.service';
 import { Router } from '@angular/router';
+import { GestionTitreService } from 'src/app/router/gestion-titre.service';
 
 @Component({
   selector: 'app-nav-menu-principal',
@@ -13,7 +14,8 @@ export class NavMenuPrincipalComponent implements OnInit {
   private _isAuthenticated: boolean;
 
   constructor(private _serviceAuthentificationService: ServiceAuthentificationService,
-    private _router: Router) {
+              private _gestionTitreService: GestionTitreService,
+              private _router: Router) {
     this._title = 'CompteWebApp';
     this._isAuthenticated = this._serviceAuthentificationService.isAuthenticated();
     this._serviceAuthentificationService.subjectUser.subscribe(
@@ -34,7 +36,10 @@ export class NavMenuPrincipalComponent implements OnInit {
   }
 
   public deconnection() {
+    this._gestionTitreService.ChangeTitleAcceuil('Connection.');
+    this._gestionTitreService.ChangeSousTitleAcceuil('Merci de saisir vos identifiant pour vous connecter.');
     this._serviceAuthentificationService.deconnectUser();
+    this._router.navigate(['/connection']);
   }
 
 }

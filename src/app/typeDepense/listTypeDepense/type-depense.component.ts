@@ -22,11 +22,16 @@ export class TypeDepenseComponent implements OnInit {
               private _formBuilder: FormBuilder,
               private _serviceAuthentificationService: ServiceAuthentificationService) {
 
-    this._typeDepenseDAO.chargeTous().subscribe(
+    this._typeDepenseDAO.chargeTous(this._serviceAuthentificationService.getUserID()).subscribe(
       (data) => {
         if (data.status === 'success') {
-          console.log(data.result);
-          this._tab_sTypesDepense = data.result;
+          // console.log(data.result);
+          this._tab_sTypesDepense = new Array();
+          for (const entry of data.result) {
+            this._tab_sTypesDepense = [ this._typeDepenseDAO.chargeObjetDepuisRetourBackEnd(entry)
+                                        , ...this._tab_sTypesDepense];
+            // console.log(this._tab_sTypesDepense);
+          }
         } else {
           this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
         }
@@ -54,28 +59,46 @@ export class TypeDepenseComponent implements OnInit {
 
   public modifieTypeDepense(p_nIndex: number, p_id: string, p_oForm: any): void {
 
-    const tokken = this._serviceAuthentificationService.decodeTokken();
-    const idUser = tokken.id;
-    console.log(idUser);
-    if ($(`#nom${p_nIndex}`).val() !== '') {
-      this._tab_sTypesDepense[p_nIndex].sNom = $(`#nom${p_nIndex}`).val();
+    const typeDepense: TypeDepense = new TypeDepense($(`#nom${p_nIndex}`).val(), $(`#description${p_nIndex}`).val());
+    if ( typeDepense.sNom === '') {
+      typeDepense.sNom = this._tab_sTypesDepense[p_nIndex].sNom;
     }
-    if ($(`#description${p_nIndex}`).val() !== '') {
-      this._tab_sTypesDepense[p_nIndex].sDescription = $(`#description${p_nIndex}`).val();
+    if ( typeDepense.sDescription === '') {
+      typeDepense.sDescription = this._tab_sTypesDepense[p_nIndex].sDescription;
     }
-    console.log(this._tab_sTypesDepense[p_nIndex]);
+    typeDepense.id = this._tab_sTypesDepense[p_nIndex].id;
+
     // on enregistre
-    this._typeDepenseDAO.modifieUn(idUser, this._tab_sTypesDepense[p_nIndex]).subscribe(
-                                              (data) => {
-                                                if (data.status === 'success') {
-                                                  this._serviceToastMessageService.afficheMessage(environment.valid, data.message);
-                                                } else {
-                                                  this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
-                                                }
-                                              },
-                                              (error) => {
-                                                this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
-                                              });
+    this._typeDepenseDAO.modifieUn(this._serviceAuthentificationService.getUserID(), typeDepense).subscribe(
+        (data) => {
+          if (data.status === 'success') {
+            this._tab_sTypesDepense[p_nIndex] = typeDepense;
+            this._serviceToastMessageService.afficheMessage(environment.valid, data.message);
+          } else {
+            this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
+          }
+        },
+        (error) => {
+          this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
+        });
+  }
+
+  public AjouteListDepense() {
+    const typeDepense: TypeDepense = new TypeDepense($(`#nomAjoutDepense`).val(), $(`#descriptionAjoutDepense`).val());
+    // typeDepense.toStringVersConsole();
+    this._typeDepenseDAO.enregistreUn(this._serviceAuthentificationService.getUserID(), typeDepense).subscribe(
+        (data) => {
+          if (data.status === 'success') {
+            this._tab_sTypesDepense = [ this._typeDepenseDAO.chargeObjetDepuisRetourBackEnd(data.result)
+                                        , ...this._tab_sTypesDepense];
+            this._serviceToastMessageService.afficheMessage(environment.valid, data.message);
+          } else {
+            this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
+          }
+        },
+        (error) => {
+          this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
+        });
   }
 
 }

@@ -7,8 +7,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a *ngIf="!_isAuthenticated" class="nav-item nav-link active" href="#" routerLink="/connection">connection <span class="sr-only">(current)</span></a>
-          <a *ngIf="_isAuthenticated" class="nav-item nav-link active" href="#" routerLink="/connection" (click)="deconnection()">deconnection <span class="sr-only">(current)</span></a>
+          <a *ngIf="!_isAuthenticated" class="nav-item nav-link active" routerLink="/connection">connection <span class="sr-only">(current)</span></a>
+          <a *ngIf="_isAuthenticated" class="nav-item nav-link active" (click)="deconnection()">deconnection <span class="sr-only">(current)</span></a>
+          <a *ngIf="_isAuthenticated" class="nav-item nav-link active" routerLink="/gestionCompte/principal">gestion Cpte <span class="sr-only">(current)</span></a>
         </div>
       </div>
     </nav>
