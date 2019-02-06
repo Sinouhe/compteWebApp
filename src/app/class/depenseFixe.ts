@@ -8,13 +8,20 @@ export class DepenseFixe extends SuperClass {
     private _sDescription: string;
     private _nMontant: number;
     private _sId: string;
+    private _bActif: boolean;
 
-    constructor(p_sNom: string = '', p_sDescription: string = '', p_nNomtant: number = 0,  p_sId: string = '') {
+    constructor(p_sNom: string = '',
+                p_sDescription: string = '',
+                p_nNomtant: number = 0,
+                p_sId: string = '',
+                p_bActif: boolean = true) {
+
         super();
         this._sNom = p_sNom;
         this._sDescription = p_sDescription;
         this._sId = p_sId;
         this._nMontant = p_nNomtant;
+        this._bActif = p_bActif;
     }
 
     public get sDescription(): string {
@@ -33,6 +40,10 @@ export class DepenseFixe extends SuperClass {
         return this._nMontant;
     }
 
+    public get bActif(): boolean {
+        return this._bActif;
+    }
+
     public set sDescription(p_sDescription) {
         this._sDescription = p_sDescription;
     }
@@ -47,6 +58,10 @@ export class DepenseFixe extends SuperClass {
 
     public set nMontant(p_nMontant: number) {
         this._nMontant = p_nMontant;
+    }
+
+    public set bActif(p_bActif: boolean ) {
+        this._bActif = p_bActif;
     }
 
     toStringVersConsole(): void {

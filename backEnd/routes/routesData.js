@@ -43,5 +43,6 @@ module.exports = (data) => {
     .get('/depenseFixe/all', (req, res) => {
         depenseFixe.getAll(req, res);
     })
+    
 
 }

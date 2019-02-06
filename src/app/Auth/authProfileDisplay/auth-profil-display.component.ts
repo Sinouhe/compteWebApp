@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { OnInit, Output, EventEmitter, Component } from '@angular/core';
 import { ServiceAuthentificationService } from 'src/app/services/service-authentification.service';
 import { User } from '../../class/user';
 import { FormGroup, FormBuilder } from '@angular/forms';

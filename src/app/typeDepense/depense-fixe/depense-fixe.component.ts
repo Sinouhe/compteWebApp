@@ -6,6 +6,7 @@ import { ServiceToastMessageService } from 'src/app/services/service-toast-messa
 import { environment } from 'src/environments/environment.prod';
 import $ from 'jquery';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-depense-fixe',
@@ -32,7 +33,7 @@ export class DepenseFixeComponent implements OnInit {
             this._tab_sDepenseFixe = [ this._depenseFixeDAO.chargeObjetDepuisRetourBackEnd(entry)
                                         , ...this._tab_sDepenseFixe];
           }
-          console.log(this._tab_sDepenseFixe);
+          // console.log(this._tab_sDepenseFixe);
         } else {
           this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
         }
@@ -47,7 +48,8 @@ export class DepenseFixeComponent implements OnInit {
     this._oFormDepenseFixe = this._formBuilder.group({
       nom: '',
       description: '',
-      montant: ''
+      montant: '',
+      actif: null
     });
   }
 
@@ -67,7 +69,7 @@ export class DepenseFixeComponent implements OnInit {
     const depenseFixe: DepenseFixe = new DepenseFixe( $(`#nomAjoutDepenseFixe`).val(),
                                                       $(`#descriptionAjoutDepenseFixe`).val(),
                                                       montant);
-    depenseFixe.toStringVersConsole();
+    // depenseFixe.toStringVersConsole();
     this._depenseFixeDAO.enregistreUn(this._serviceAuthentificationService.getUserID(), depenseFixe).subscribe(
           (data) => {
             if (data.status === 'success') {
@@ -85,6 +87,7 @@ export class DepenseFixeComponent implements OnInit {
 
   public modifieDepenseFixe(p_nIndex: number, p_id: string, p_oForm: any): void {
     let montant: number;
+    // console.log(this._tab_sDepenseFixe[p_nIndex].bActif);
     if ($(`#depenseFixeMontant${p_nIndex}`).val()) {
       if (isNaN($(`#depenseFixeMontant${p_nIndex}`).val())) {
         this._serviceToastMessageService.afficheMessage(environment.alert, 'Merci de rentrer un montant au format numérique');
@@ -113,6 +116,7 @@ export class DepenseFixeComponent implements OnInit {
       depenseFixe.nMontant = this._tab_sDepenseFixe[p_nIndex].nMontant;
     }
     depenseFixe.sId = this._tab_sDepenseFixe[p_nIndex].sId;
+    depenseFixe.bActif = this._tab_sDepenseFixe[p_nIndex].bActif;
     // depenseFixe.toStringVersConsole();
     // on enregistre
     this._depenseFixeDAO.modifieUn(this._serviceAuthentificationService.getUserID(), depenseFixe).subscribe(
@@ -127,6 +131,10 @@ export class DepenseFixeComponent implements OnInit {
         (error) => {
           this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
         });
+  }
+
+  public check(p_nIndex): void {
+    this._tab_sDepenseFixe[p_nIndex].bActif = !this._tab_sDepenseFixe[p_nIndex].bActif;
   }
 
 }

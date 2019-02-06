@@ -68,10 +68,11 @@ module.exports = {
         const nom = req.body.depenseFixe._sNom;
         const description = req.body.depenseFixe._sDescription;
         const montant = req.body.depenseFixe._nMontant;
+        const actif = req.body.depenseFixe._bActif;
         const id = req.body.depenseFixe._sId;
-        console.log('nom : ' + nom + ' description : ' + description + ' id : '+ id + ' montant : ' + montant);
-        if(nom && id && montant){
-            depenseFixeImport.update({_id: id}, { $set: { sNom: nom, sDescription: description, nMontant: montant }})
+        console.log('nom : ' + nom + ' description : ' + description + ' id : '+ id + ' montant : ' + montant + ' Actif : ' + actif);
+        if(nom && id && montant && actif !== undefined){
+            depenseFixeImport.update({_id: id}, { $set: { sNom: nom, sDescription: description, nMontant: montant, bActif: actif }})
                 .then(() => {
                     res.send(success('typeDepense mis à jour.', typeDepense));
                 })
@@ -79,7 +80,9 @@ module.exports = {
                     res.send(error(err.message, typeDepense));
                 })
         }else{
-            res.send(error(`Information(s) manquante(s) nom : ${nom}, description: ${description}, montant: ${montant}, id: ${id}.`));
+            res.send(error(`Information(s) manquante(s) nom : ${nom}, 
+                            description: ${description}, montant: ${montant}, 
+                            Actif: ${actif}, id: ${id}.`));
         }
     }
 

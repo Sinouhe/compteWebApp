@@ -30,11 +30,11 @@ export class TypeDepenseComponent implements OnInit {
           for (const entry of data.result) {
             this._tab_sTypesDepense = [ this._typeDepenseDAO.chargeObjetDepuisRetourBackEnd(entry)
                                         , ...this._tab_sTypesDepense];
-            // console.log(this._tab_sTypesDepense);
           }
         } else {
           this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
         }
+        // console.log(this._tab_sTypesDepense);
       },
       (error) => {
         this._serviceToastMessageService.afficheMessage(environment.alert,

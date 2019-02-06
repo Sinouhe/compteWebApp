@@ -16,7 +16,7 @@
       </div>
       <div class="form-group col-lg-2">
         <mat-form-field>
-          <input matInput placeholder="montant (€)" id="montantAjoutDepenseFixe"> 
+          <input matInput placeholder="montant (€)" id="montantAjoutDepenseFixe">
         </mat-form-field>
       </div>
     </div>
@@ -27,7 +27,11 @@
         </mat-form-field>
       </div>
     </div>
-    <button (click)="AjouteDepenseFixe();" class="btn btn-warning">Ajouter</button>  
+    <button   (click)="AjouteDepenseFixe();"
+    mat-button 
+    class='matButton'
+    matTooltip="Sauvegarder les modification"
+    >Ajouter</button>
   </mat-expansion-panel>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -41,9 +45,6 @@
     <div *ngFor="let itemDepense of _tab_sDepenseFixe; let i=index">
         <form [formGroup]="_oFormDepenseFixe" (ngSubmit)="modifieDepenseFixe(i, itemDepense._sId, _oFormDepenseFixe)">
             <div class="row">
-              <div class="form-group col-lg-2" style="padding-top: 15px;">
-                  Nom : 
-              </div>
               <div class="form-group col-lg-3">
                 <mat-form-field>
                   <input  matInput 
@@ -52,11 +53,10 @@
                           id="depenseFixeNom{{i}}"
                           formControlName="nom"
                           >
+                <mat-hint>Nom</mat-hint>
                 </mat-form-field>
-              </div>         
-              <div class="form-group col-lg-2" style="padding-top: 15px;">
-                  Montant : 
-              </div>       
+                
+              </div>            
               <div class="form-group col-lg-3">
                 <mat-form-field>
                     <input  matInput 
@@ -65,14 +65,10 @@
                             id="depenseFixeMontant{{i}}"
                             formControlName="montant"
                             >
-                  </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-lg-2" style="padding-top: 15px;">
-                  description : 
+                            <mat-hint>Montant (€)</mat-hint>
+                </mat-form-field>
               </div>
-              <div class="form-group col-lg-3">
+              <div class="form-group col-lg-6">
                 <mat-form-field>
                   <input  matInput 
                           [placeholder]="itemDepense.sDescription" 
@@ -80,19 +76,27 @@
                           id="depenseFixeDescription{{i}}"
                           formControlName="description"
                           >
+                          <mat-hint>Description</mat-hint>
                 </mat-form-field>
-              </div>
-              <div class="form-group offset-lg-4 col-lg-3">
+              </div>   
+            </div>
+            <div class="row">           
+              <div class="form-group col-lg-3">
                 <button   type="submit" 
                           mat-button 
-                          class="btnSaveProfilChange"
+                          class='matButton'
                           matTooltip="Sauvegarder les modification"
                           >
                   save change
                 </button>
               </div>
+              <div class="form-group col-lg-3">
+                  <mat-checkbox [checked]="itemDepense.bActif"
+                                (change)="check(i)">Actif
+                            </mat-checkbox>
+              </div>
             </div>
-            </form>
+          </form>
       <mat-divider></mat-divider>
     </div>
   </mat-expansion-panel>

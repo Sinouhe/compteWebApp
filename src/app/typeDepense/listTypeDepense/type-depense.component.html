@@ -20,7 +20,11 @@
         </mat-form-field>
       </div>
     </div>
-    <button (click)="AjouteListDepense();" class="btn btn-warning">Ajouter</button>  
+    <button   (click)="AjouteListDepense();"
+              mat-button 
+              class='matButton'
+              matTooltip="Sauvegarder les modification"
+    >Ajouter</button>
   </mat-expansion-panel>
   <mat-expansion-panel>
     <mat-expansion-panel-header>

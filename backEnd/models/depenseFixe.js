@@ -15,6 +15,10 @@ const depenseFixeSchema = new schema({
     oUser: {
         type: schema.Types.ObjectId,
         ref: 'user'
+    },
+    bActif: {
+        type: Boolean,
+        default: true
     }
 });
 

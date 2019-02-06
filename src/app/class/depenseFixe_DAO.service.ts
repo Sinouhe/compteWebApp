@@ -46,7 +46,11 @@ export class DepenseFixeDAO {
   }
 
   public chargeObjetDepuisRetourBackEnd(p_object: any): DepenseFixe {
-    const oTypeDepense: DepenseFixe = new DepenseFixe(p_object.sNom, p_object.sDescription, p_object.nMontant, p_object._id);
+    const oTypeDepense: DepenseFixe = new DepenseFixe(p_object.sNom,
+                                                      p_object.sDescription,
+                                                      p_object.nMontant,
+                                                      p_object._id,
+                                                      p_object.bActif);
     return oTypeDepense;
 
   }

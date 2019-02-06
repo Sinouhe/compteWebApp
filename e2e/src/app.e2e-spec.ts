@@ -1,5 +1,5 @@
 import { AppPage } from './app.po';
-
+/*
 describe('workspace-project App', () => {
   let page: AppPage;
 
@@ -12,3 +12,4 @@ describe('workspace-project App', () => {
     expect(page.getTitleText()).toEqual('Welcome to compteWebApp!');
   });
 });
+*/
