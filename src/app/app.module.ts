@@ -14,7 +14,7 @@ import { GeneralModule } from './general.module';
 import { RoutesCompteWebAppModule } from './router/routes-compte-web-app/routes-compte-web-app.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -32,7 +32,6 @@ import { HttpClientModule } from '@angular/common/http';
     DepenseFixeComponent
   ],
   imports: [
-    FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     BrowserModule,

@@ -1,6 +1,7 @@
 const {success,error} = require('../biblio/function');
 const typeDepense = require('../controlers/typeDepense-controller');
-const depenseFixe = require('../controlers/depenseFixe-controller')
+const depenseFixe = require('../controlers/depenseFixe-controller');
+const depenseFixeParDate = require('../controlers/depenseFixeParDate-controller');
 
 /**************************
  * export des routes data *
@@ -43,6 +44,8 @@ module.exports = (data) => {
     .get('/depenseFixe/all', (req, res) => {
         depenseFixe.getAll(req, res);
     })
-    
+    .post('/depenseFixeParDate/createNew', (req, res) => {
+        depenseFixeParDate.createNew(req, res);
+    })
 
 }

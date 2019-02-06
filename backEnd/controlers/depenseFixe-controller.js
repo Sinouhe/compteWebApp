@@ -4,7 +4,7 @@ const userImport = require('../models/user');
 
 module.exports = {
     getAll(req, res) {
-        console.log(req.query.userId)
+        // console.log(req.query.userId)
         const userId = req.query.userId;
         if (userId) {
             userImport.findById(userId)

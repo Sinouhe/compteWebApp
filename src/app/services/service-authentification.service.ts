@@ -130,6 +130,7 @@ export class ServiceAuthentificationService implements OnInit {
 
   public getUserID() {
     const tokken = this.decodeTokken();
+    // console.log('token - ' + JSON.stringify(tokken));
     return tokken.id;
 }
 

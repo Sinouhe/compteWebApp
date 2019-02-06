@@ -33,7 +33,7 @@ export class AuthProfilDisplayComponent implements OnInit {
                                         .subscribe(
                                           (data) => {
                                             this._oUser = data;
-                                            console.log(this._oUser);
+                                            // console.log(this._oUser);
                                           },
                                           (error) => {
                                             this._serviceToastMessageService.afficheMessage(environment.alert,

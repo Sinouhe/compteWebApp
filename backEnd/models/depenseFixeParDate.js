@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-const depenseFixeParDateSchema = new schema({
+const DepenseFixeParDateSchema = new schema({
     nMois: {
         type: Number,
         required: [true, 'Le mois est requis'],
     },
-    sAnnee: {
+    nAnnee: {
         type: Number,
         required: [true, 'L\'année est requise'],
     },
@@ -21,6 +21,6 @@ const depenseFixeParDateSchema = new schema({
     }
 });
 
-depenseFixeParDateSchema.index({nMois: 1, sAnnee: 1, odepenseFixe: 1}, {unique: true});
+DepenseFixeParDateSchema.index({nMois: 1, nAnnee: 1, odepenseFixe: 1}, {unique: true});
 
-module.exports = typeDepense = mongoose.model('depenseFixeParDate',depenseFixeParDateSchema,'depenseFixeParDate_COLL');
+module.exports = depenseFixeParDate = mongoose.model('depenseFixeParDate',DepenseFixeParDateSchema,'depenseFixeParDate_COLL');

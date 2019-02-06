@@ -1,4 +1,4 @@
-import { InterfaceSuperClass } from './interfaceSuperClass';
+import { InterfaceSuperClass } from './InterfaceSuperClass';
 
 export abstract class SuperClass implements InterfaceSuperClass {
 

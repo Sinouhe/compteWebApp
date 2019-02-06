@@ -4,7 +4,6 @@ const userImport = require('../models/user');
 
 module.exports = {
     getAll(req, res) {
-        //console.log(req.query.userId)
         const userId = req.query.userId;
         if (userId) {
             userImport.findById(userId)
@@ -29,11 +28,9 @@ module.exports = {
         }
     },
     addOne(req,res){
-        // console.log(req.body)
         const nom = req.body.typeDepense._sNom;
         const description = req.body.typeDepense._sDescription;
         const userId = req.body.userId;
-        // console.log('nom : ' + nom + ' description : ' + description + ' userId : ' + userId);
         if (nom && userId) {
             userImport.findById(userId)
                 .then((userResult) => {
@@ -62,7 +59,6 @@ module.exports = {
         }
     },
     modifyOne(req,res){
-        // console.log(req.body)
         const nom = req.body.typeDepense._sNom;
         const description = req.body.typeDepense._sDescription;
         const id = req.body.typeDepense._sId;

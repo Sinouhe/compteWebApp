@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
+import { DepenseFixeParDateDAO } from 'src/app/class/depenseFixeParDate_DAO.service';
+import { ServiceAuthentificationService } from 'src/app/services/service-authentification.service';
+import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
+import { environment } from 'src/environments/environment.prod';
+import { DepenseFixe } from 'src/app/class/depenseFixe';
 
 export interface PeriodicElement {
   name: string;
@@ -33,6 +38,7 @@ export class GestionCompteComponent implements OnInit {
   private _moisEnCoursEntier: number;
   private _anneeEnCours: number;
   private _bMoisCree = false;
+  private _tab_listDepensesFixes: Array<DepenseFixe>;
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -52,7 +58,11 @@ export class GestionCompteComponent implements OnInit {
                           'Novembre',
                           'Decembre'];
 
-  constructor() {
+  constructor(private _depenseFixeParDateDAO: DepenseFixeParDateDAO,
+              private _serviceAuthentificationService: ServiceAuthentificationService,
+              private _serviceToastMessageService: ServiceToastMessageService) {
+
+    this._tab_listDepensesFixes = new Array();
     const date = new Date();
     this._moisEnCoursEntier = date.getMonth();
     this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier];
@@ -84,22 +94,41 @@ export class GestionCompteComponent implements OnInit {
     this._anneeEnCours--;
   }
 
-  public moisSuivant() {
-    if (this._moisEnCoursEntier === 11) {
-      this._moisEnCoursEntier = 0;
+  public moisSuivant(): void {
+    if (this._moisEnCoursEntier === 12) {
+      this._moisEnCoursEntier = 1;
     } else {
       this._moisEnCoursEntier++;
     }
-    this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier];
+    this._moisEnCoursChaine = this._monthNames[(this._moisEnCoursEntier - 1)];
   }
 
-  public moisPrecedent() {
-    if (this._moisEnCoursEntier === 0) {
-      this._moisEnCoursEntier = 11;
+  public moisPrecedent(): void {
+    if (this._moisEnCoursEntier === 1) {
+      this._moisEnCoursEntier = 12;
     } else {
       this._moisEnCoursEntier--;
     }
-    this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier];
+    this._moisEnCoursChaine = this._monthNames[(this._moisEnCoursEntier - 1)];
+  }
+
+  public creerLeMois(): void {
+     console.log(this._anneeEnCours + ' - ' + this._moisEnCoursChaine + ' - ' + (this._moisEnCoursEntier));
+    this._depenseFixeParDateDAO.createNew(this._serviceAuthentificationService.getUserID(),
+                                          this._moisEnCoursEntier,
+                                          this._anneeEnCours)
+                      .subscribe(
+                        (data) => {
+                          if (data.status === 'success') {
+                            console.log(data);
+                            this._serviceToastMessageService.afficheMessage(environment.valid, data.message);
+                          } else {
+                            this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
+                          }
+                        },
+                        (error) => {
+                          this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
+                        });
   }
 
 }
