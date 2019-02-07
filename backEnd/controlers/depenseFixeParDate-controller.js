@@ -57,7 +57,7 @@ module.exports = {
             res.send(error(`Information(s) manquante(s) user Id : ${sUserId} mois : ${nMois} annee : ${nAnnee}`));
         }
     },
-    getAll(req, res) {
+    getChargelisteParMois(req, res) {
         const sUserId = req.query.userId;
         const nMois = req.query._nMois;
         const nAnnee = req.query._nAnnee;

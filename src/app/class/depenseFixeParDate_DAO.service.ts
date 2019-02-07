@@ -34,35 +34,31 @@ export class DepenseFixeParDateDAO implements InterfaceModeleDAO {
                                                           }));
   }
 
-  public chargeObjetDepuisRetourBackEnd(p_object: any): Array<DepenseFixeParDate> {
+  public chargeObjetDepuisRetourBackEnd(p_entry: any): DepenseFixeParDate {
 
-    const tab_oDepenseFixeParDate: Array<DepenseFixeParDate> = new Array<DepenseFixeParDate>();
+    let oDepenseFixeParDate: DepenseFixeParDate;
 
-    for (const entry of p_object) {
-
-      let oDepenseFixe: DepenseFixe;
-      if (entry.odepenseFixe) {
-        oDepenseFixe = this._oDepenseFixeDAO.chargeObjetDepuisRetourBackEnd(entry.odepenseFixe);
-      } else {
-        oDepenseFixe = null;
-      }
-      tab_oDepenseFixeParDate.push(new DepenseFixeParDate(entry._id,
-                                                          entry.bPaye,
-                                                          entry.nMois,
-                                                          entry.nAnnee,
-                                                          oDepenseFixe));
-
+    let oDepenseFixe: DepenseFixe;
+    if (p_entry.odepenseFixe) {
+      oDepenseFixe = this._oDepenseFixeDAO.chargeObjetDepuisRetourBackEnd(p_entry.odepenseFixe);
+    } else {
+      oDepenseFixe = null;
     }
+    oDepenseFixeParDate = new DepenseFixeParDate(p_entry._id,
+                                                p_entry.bPaye,
+                                                p_entry.nMois,
+                                                p_entry.nAnnee,
+                                                oDepenseFixe);
 
-    return tab_oDepenseFixeParDate;
+    return oDepenseFixeParDate;
 
   }
 
-  public chargeTous(p_sUserId: string, p_nMois: number, p_nAnnee: number): Observable<any> {
+  public chargelisteParMois(p_sUserId: string, p_nMois: number, p_nAnnee: number): Observable<any> {
     const params = new HttpParams().set('userId', p_sUserId)
                                     .set('_nMois', p_nMois.toString())
                                     .set('_nAnnee', p_nAnnee.toString());
-    return this._http.get(`${environment.urlBackEnd}${environment.urlBackEndDepenseFixeParDate}all`, { params: params })
+    return this._http.get(`${environment.urlBackEnd}${environment.urlBackEndDepenseFixeParDate}ChargelisteParMois`, { params: params })
                                                           .pipe(map((res) => {
                                                             return res;
                                                           }));

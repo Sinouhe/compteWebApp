@@ -47,7 +47,7 @@ module.exports = (data) => {
     .post('/depenseFixeParDate/createNew', (req, res) => {
         depenseFixeParDate.createNew(req, res);
     })
-    .get('/depenseFixeParDate/all', (req, res) => {
-        depenseFixeParDate.getAll(req, res);
+    .get('/depenseFixeParDate/ChargelisteParMois', (req, res) => {
+        depenseFixeParDate.getChargelisteParMois(req, res);
     })
 }
