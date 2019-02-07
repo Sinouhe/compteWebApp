@@ -8,10 +8,9 @@ import { DepenseFixe } from 'src/app/class/depenseFixe';
 import { DepenseFixeParDate } from 'src/app/class/depenseFixeParDate.service';
 
 export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  nName: string;
+  nMontant: number;
+  bPaye: number;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
@@ -40,6 +39,8 @@ export class GestionCompteComponent implements OnInit {
   private _anneeEnCours: number;
   private _bMoisCree = false;
   private _tab_listDepensesFixes: Array<DepenseFixeParDate>;
+  private _tabAsso_tab_listDepensesFixes: Object;
+
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -64,6 +65,7 @@ export class GestionCompteComponent implements OnInit {
               private _serviceToastMessageService: ServiceToastMessageService) {
 
     this._tab_listDepensesFixes = new Array();
+    this._tabAsso_tab_listDepensesFixes = new Object();
     const date = new Date();
     this._moisEnCoursEntier = date.getMonth();
     this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier];
@@ -71,19 +73,20 @@ export class GestionCompteComponent implements OnInit {
     this._depenseFixeParDateDAO.chargeTous(this._serviceAuthentificationService.getUserID(),
                                           this._moisEnCoursEntier,
                                           this.anneeEnCours)
-                                    .subscribe(
-                                      (data) => {
-                                        if (data.status === 'success') {
-                                          console.log(data.result);
-                                          this._tab_listDepensesFixes = _depenseFixeParDateDAO.chargeObjetDepuisRetourBackEnd(data.result);
-                                          console.log(this._tab_listDepensesFixes);
-                                        } else {
-                                          this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
-                                        }
-                                      },
-                                      (error) => {
-                                        this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
-                                      });
+      .subscribe(
+        (data) => {
+          if (data.status === 'success') {
+            this._tab_listDepensesFixes = _depenseFixeParDateDAO.chargeObjetDepuisRetourBackEnd(data.result);
+            this._tabAsso_tab_listDepensesFixes[this._moisEnCoursChaine + this._anneeEnCours.toString()] =
+                                    this._tab_listDepensesFixes;
+            this.checkData();
+          } else {
+            this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
+          }
+        },
+        (error) => {
+          this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
+        });
   }
 
   ngOnInit() {
@@ -94,20 +97,22 @@ export class GestionCompteComponent implements OnInit {
     return this._moisEnCoursChaine;
   }
 
-  public get bMoisCree() {
+  public get bMoisCree(): boolean  {
     return this._bMoisCree;
   }
 
-  public get anneeEnCours() {
+  public get anneeEnCours(): number {
     return this._anneeEnCours;
   }
 
   public anneeSuivante() {
     this._anneeEnCours++;
+    this.checkData();
   }
 
   public anneePrecedente() {
     this._anneeEnCours--;
+    this.checkData();
   }
 
   public moisSuivant(): void {
@@ -117,6 +122,7 @@ export class GestionCompteComponent implements OnInit {
       this._moisEnCoursEntier++;
     }
     this._moisEnCoursChaine = this._monthNames[(this._moisEnCoursEntier - 1)];
+    this.checkData();
   }
 
   public moisPrecedent(): void {
@@ -126,10 +132,10 @@ export class GestionCompteComponent implements OnInit {
       this._moisEnCoursEntier--;
     }
     this._moisEnCoursChaine = this._monthNames[(this._moisEnCoursEntier - 1)];
+    this.checkData();
   }
 
   public creerLeMois(): void {
-     console.log(this._anneeEnCours + ' - ' + this._moisEnCoursChaine + ' - ' + (this._moisEnCoursEntier));
     this._depenseFixeParDateDAO.createNew(this._serviceAuthentificationService.getUserID(),
                                           this._moisEnCoursEntier,
                                           this._anneeEnCours)
@@ -144,6 +150,18 @@ export class GestionCompteComponent implements OnInit {
                         (error) => {
                           this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
                         });
+  }
+
+  public checkData(): void {
+    if (this.donneeChargeParMoisEtAnnee()) {
+      this._bMoisCree = true;
+    } else {
+      this._bMoisCree = false;
+    }
+  }
+
+  public donneeChargeParMoisEtAnnee(p_Key: string = this._moisEnCoursChaine + this._anneeEnCours.toString()) {
+    return this._tabAsso_tab_listDepensesFixes.hasOwnProperty(p_Key);
   }
 
 }
