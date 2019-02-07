@@ -56,5 +56,30 @@ module.exports = {
         }else{
             res.send(error(`Information(s) manquante(s) user Id : ${sUserId} mois : ${nMois} annee : ${nAnnee}`));
         }
+    },
+    getAll(req, res) {
+        const sUserId = req.query.userId;
+        const nMois = req.query._nMois;
+        const nAnnee = req.query._nAnnee;
+        
+        if (sUserId && nMois && nAnnee) {
+            depenseFixeParDateImport.find({nMois: nMois, nAnnee: nAnnee})
+                                    .populate({
+                                        path: 'odepenseFixe',
+                                        populate: {
+                                            path:'oUser',
+                                            model: 'user',
+                                            match: { _id: sUserId}
+                                        }
+                                    })
+                                    .then((Result) => {
+                                        res.send(success('dépense fixe par date', Result));
+                                    })
+                                    .catch((err) => {
+                                        res.send(error(err.message, null));
+                                    });
+        }else{
+            res.send(error(`Information(s) manquante(s) user Id : ${sUserId} mois : ${nMois} annee : ${nAnnee}`));
+        }
     }
 }

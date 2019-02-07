@@ -1,6 +1,7 @@
 import { identifierModuleUrl } from '@angular/compiler';
 import { SuperClass } from './modelDeClasse/SuperClass';
 import { JsonPipe } from '@angular/common';
+import { User } from './user';
 
 export class DepenseFixe extends SuperClass {
 
@@ -9,6 +10,7 @@ export class DepenseFixe extends SuperClass {
     private _nMontant: number;
     private _sId: string;
     private _bActif: boolean;
+    private _oUser: User;
 
     constructor(p_sNom: string = '',
                 p_sDescription: string = '',
@@ -42,6 +44,14 @@ export class DepenseFixe extends SuperClass {
 
     public get bActif(): boolean {
         return this._bActif;
+    }
+
+    public get oUser(): User {
+        return this._oUser;
+    }
+
+    public set oUser(p_oUser: User) {
+        this._oUser = p_oUser;
     }
 
     public set sDescription(p_sDescription) {

@@ -4,15 +4,18 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { DepenseFixe } from './depenseFixe';
 import { Observable, Subject } from 'rxjs';
+import { UserDAO } from './user_DAO';
+import { InterfaceModeleDAO } from './modelDeClasse/modeleDAO';
 
 @Injectable({
     providedIn: 'root'
   })
-export class DepenseFixeDAO {
+export class DepenseFixeDAO implements InterfaceModeleDAO {
 
   private _subject: Subject<DepenseFixe>;
 
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient,
+              private _userDAO: UserDAO) {
     this._subject = new Subject();
   }
 
@@ -51,6 +54,9 @@ export class DepenseFixeDAO {
                                                       p_object.nMontant,
                                                       p_object._id,
                                                       p_object.bActif);
+    if (p_object.oUser) {
+      oTypeDepense.oUser = this._userDAO.chargeObjetDepuisRetourBackEnd(p_object.oUser);
+    }
     return oTypeDepense;
 
   }

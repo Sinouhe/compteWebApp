@@ -34,4 +34,13 @@ export class UserDAO {
                       }));
   }
 
+  public chargeObjetDepuisRetourBackEnd(p_object: any): User {
+    const oUser: User = new User( p_object.nom,
+                                  p_object.prenom,
+                                  p_object.email,
+                                  p_object._id);
+    return oUser;
+
+  }
+
 }

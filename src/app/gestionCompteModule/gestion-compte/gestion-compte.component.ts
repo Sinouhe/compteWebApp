@@ -5,6 +5,7 @@ import { ServiceAuthentificationService } from 'src/app/services/service-authent
 import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
 import { environment } from 'src/environments/environment.prod';
 import { DepenseFixe } from 'src/app/class/depenseFixe';
+import { DepenseFixeParDate } from 'src/app/class/depenseFixeParDate.service';
 
 export interface PeriodicElement {
   name: string;
@@ -38,7 +39,7 @@ export class GestionCompteComponent implements OnInit {
   private _moisEnCoursEntier: number;
   private _anneeEnCours: number;
   private _bMoisCree = false;
-  private _tab_listDepensesFixes: Array<DepenseFixe>;
+  private _tab_listDepensesFixes: Array<DepenseFixeParDate>;
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -67,7 +68,22 @@ export class GestionCompteComponent implements OnInit {
     this._moisEnCoursEntier = date.getMonth();
     this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier];
     this._anneeEnCours = date.getFullYear();
-
+    this._depenseFixeParDateDAO.chargeTous(this._serviceAuthentificationService.getUserID(),
+                                          this._moisEnCoursEntier,
+                                          this.anneeEnCours)
+                                    .subscribe(
+                                      (data) => {
+                                        if (data.status === 'success') {
+                                          console.log(data.result);
+                                          this._tab_listDepensesFixes = _depenseFixeParDateDAO.chargeObjetDepuisRetourBackEnd(data.result);
+                                          console.log(this._tab_listDepensesFixes);
+                                        } else {
+                                          this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
+                                        }
+                                      },
+                                      (error) => {
+                                        this._serviceToastMessageService.afficheMessage(environment.alert, error.message);
+                                      });
   }
 
   ngOnInit() {
@@ -120,7 +136,6 @@ export class GestionCompteComponent implements OnInit {
                       .subscribe(
                         (data) => {
                           if (data.status === 'success') {
-                            console.log(data);
                             this._serviceToastMessageService.afficheMessage(environment.valid, data.message);
                           } else {
                             this._serviceToastMessageService.afficheMessage(environment.alert, data.message);

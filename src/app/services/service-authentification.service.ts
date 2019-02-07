@@ -128,7 +128,7 @@ export class ServiceAuthentificationService implements OnInit {
     this._oSubjectUser.next(this._oUser);
   }
 
-  public getUserID() {
+  public getUserID(): string {
     const tokken = this.decodeTokken();
     // console.log('token - ' + JSON.stringify(tokken));
     return tokken.id;

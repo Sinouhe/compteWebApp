@@ -4,11 +4,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { TypeDepense } from './typeDepense';
 import { Observable, Subject } from 'rxjs';
+import { InterfaceModeleDAO } from './modelDeClasse/modeleDAO';
 
 @Injectable({
     providedIn: 'root'
   })
-export class TypeDepenseDAO {
+export class TypeDepenseDAO implements InterfaceModeleDAO {
 
   private _subject: Subject<TypeDepense>;
 
