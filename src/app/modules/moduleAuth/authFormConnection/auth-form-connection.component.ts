@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceAuthentificationService } from '../../services/service-authentification.service';
+import { ServiceAuthentificationService } from '../../../services/service-authentification.service';
 import { environment } from 'src/environments/environment';
-import { ServiceToastMessageService } from '../../services/service-toast-message.service';
+import { ServiceToastMessageService } from '../../../services/service-toast-message.service';
 import { User } from 'src/app/class/user';
-import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
+import { AuthFormVerification } from 'src/app/modules/moduleAuth/AuthFormVerification';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 

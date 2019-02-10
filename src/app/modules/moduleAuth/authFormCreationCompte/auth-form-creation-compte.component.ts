@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../class/user';
+import { User } from '../../../class/user';
 import { ServiceAuthentificationService } from 'src/app/services/service-authentification.service';
 import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
 import { UserDAO } from 'src/app/class/user_DAO';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
+import { AuthFormVerification } from 'src/app/modules/moduleAuth/AuthFormVerification';
 
 @Component({
   selector: 'app-auth-form-creation-compte',

@@ -1,9 +1,9 @@
 import { OnInit, Output, EventEmitter, Component } from '@angular/core';
 import { ServiceAuthentificationService } from 'src/app/services/service-authentification.service';
-import { User } from '../../class/user';
+import { User } from '../../../class/user';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ServiceToastMessageService } from 'src/app/services/service-toast-message.service';
-import { AuthFormVerification } from 'src/app/class/AuthFormVerification';
+import { AuthFormVerification } from 'src/app/modules/moduleAuth/AuthFormVerification';
 import { UserDAO } from 'src/app/class/user_DAO';
 import { environment } from 'src/environments/environment';
 

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from './user';
 import { Observable } from 'rxjs';
-import { DAOinterface } from './DAOinterface';
+import { DAOinterface } from './modelDeClasse/DAOinterface';
 
 @Injectable({
     providedIn: 'root'
