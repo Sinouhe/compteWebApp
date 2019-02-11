@@ -6,27 +6,19 @@ import { ServiceToastMessageService } from 'src/app/services/service-toast-messa
 import { environment } from 'src/environments/environment.prod';
 import { DepenseFixe } from 'src/app/class/depenseFixe';
 import { DepenseFixeParDate } from 'src/app/class/depenseFixeParDate.service';
+import {SelectionModel} from '@angular/cdk/collections';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { TypeDepenseDAO } from 'src/app/class/typeDepense_DAO.service';
 
-export interface PeriodicElement {
-  position: number;
-  name: string;
-  weight: number;
-  symbol: string;
+export interface DepenseFixeAffichage {
+  sNom: string;
+  sMontant: number;
+  bPaye: boolean;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
-
+export interface TypeDepenseAffichage {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-gestion-compte',
@@ -39,14 +31,13 @@ export class GestionCompteComponent implements OnInit {
   private _moisEnCoursEntier: number;
   private _anneeEnCours: number;
   private _bMoisCree = false;
-  private _tab_listDepensesFixes: Array<DepenseFixeParDate>;
   private _tabAsso_tab_listDepensesFixes: Object;
+  private _DataDepenseFixeParMois: DepenseFixeAffichage[] = [];
 
-
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-
-  @ViewChild(MatSort) sort: MatSort;
+  _typeDepenseAffichage: TypeDepenseAffichage[] = [];
+  displayedColumns: string[] = ['select', 'sNom', 'sMontant'];
+  private dataSource: MatTableDataSource<DepenseFixeAffichage>;
+  selection: SelectionModel<DepenseFixeAffichage>;
 
   private _monthNames = ['Janvier',
                           'Fevrier',
@@ -63,7 +54,8 @@ export class GestionCompteComponent implements OnInit {
 
   constructor(private _depenseFixeParDateDAO: DepenseFixeParDateDAO,
               private _serviceAuthentificationService: ServiceAuthentificationService,
-              private _serviceToastMessageService: ServiceToastMessageService) {
+              private _serviceToastMessageService: ServiceToastMessageService,
+              private _typeDepenseDAO: TypeDepenseDAO) {
 
 
     this._tabAsso_tab_listDepensesFixes = new Object();
@@ -71,12 +63,11 @@ export class GestionCompteComponent implements OnInit {
     this._moisEnCoursEntier = date.getMonth();
     this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier];
     this._anneeEnCours = date.getFullYear();
-
+    this.chargementDesDonnees();
+    this.chargeTypeDepense();
   }
 
-  ngOnInit() {
-    this.dataSource.sort = this.sort;
-  }
+  ngOnInit() {}
 
   public get moisEnCours() {
     return this._moisEnCoursChaine;
@@ -140,6 +131,7 @@ export class GestionCompteComponent implements OnInit {
 
   public checkData(): void {
     if (this.donneeChargeParMoisEtAnnee()) {
+      this.loadData();
       this._bMoisCree = true;
     } else {
       this._bMoisCree = false;
@@ -158,12 +150,17 @@ export class GestionCompteComponent implements OnInit {
                           .subscribe(
                             (data) => {
                               if (data.status === 'success') {
-                                for (const result of data.result) {
-                                  console.log(result);
+                                if (data.result.length > 0) {
+                                  const listDepensesFixesParDate: DepenseFixeParDate[] = [];
+                                  for (const result of data.result) {
+                                    listDepensesFixesParDate.push(this._depenseFixeParDateDAO.chargeObjetDepuisRetourBackEnd(result));
+                                  }
                                   this._tabAsso_tab_listDepensesFixes[this._moisEnCoursChaine + this._anneeEnCours.toString()] =
-                                  this._depenseFixeParDateDAO.chargeObjetDepuisRetourBackEnd(result);
+                                                              ({
+                                                                'depenseFixeParDate': listDepensesFixesParDate
+                                                              });
+                                  // console.log(this._tabAsso_tab_listDepensesFixes);
                                 }
-                                console.log(this._tabAsso_tab_listDepensesFixes);
                                 this.checkData();
                               } else {
                                 this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
@@ -175,6 +172,63 @@ export class GestionCompteComponent implements OnInit {
     } else {
       this.checkData();
     }
+  }
+
+  public loadData(): void {
+    this._DataDepenseFixeParMois = [];
+    const sKey: string = this._moisEnCoursChaine + this._anneeEnCours.toString();
+    for (const data in this._tabAsso_tab_listDepensesFixes[sKey]) {
+      if (this._tabAsso_tab_listDepensesFixes.hasOwnProperty(sKey)) {
+
+        // Pour les dépense fixes par date
+        const depenseFixeParDateArray: DepenseFixeParDate[] = this._tabAsso_tab_listDepensesFixes[sKey]['depenseFixeParDate'];
+        for (const depenseFixeParDate of depenseFixeParDateArray) {
+          // console.log(depenseFixeParDate);
+          // console.log(depenseFixeParDate['_oDepenseFixe'].sNom);
+          // console.log(depenseFixeParDate['_oDepenseFixe'].nMontant);
+          // console.log(depenseFixeParDate.bPaye);
+          this._DataDepenseFixeParMois.push({
+            sNom: depenseFixeParDate['_oDepenseFixe'].sNom,
+            sMontant: depenseFixeParDate['_oDepenseFixe'].nMontant,
+            bPaye: depenseFixeParDate.bPaye
+          });
+        }
+      }
+    }
+    this.dataSource = new MatTableDataSource<DepenseFixeAffichage>(this._DataDepenseFixeParMois);
+    this.selection = new SelectionModel<DepenseFixeAffichage>(true, []);
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  public chargeTypeDepense() {
+    this._typeDepenseDAO.chargeTous(this._serviceAuthentificationService.getUserID()).subscribe(
+      (data) => {
+        if (data.status === 'success') {
+          for (const entry of data.result) {
+            this._typeDepenseAffichage.push({value: entry.sNom, viewValue: entry.sNom});
+          }
+
+        } else {
+          this._serviceToastMessageService.afficheMessage(environment.alert, data.message);
+        }
+      },
+      (error) => {
+        this._serviceToastMessageService.afficheMessage(environment.alert,
+                                                        error.message);
+      });
   }
 
 }

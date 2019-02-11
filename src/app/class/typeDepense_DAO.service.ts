@@ -11,15 +11,17 @@ import { InterfaceModeleDAO } from './modelDeClasse/modeleDAO';
   })
 export class TypeDepenseDAO implements InterfaceModeleDAO {
 
-  private _subject: Subject<TypeDepense>;
+  // private _subject: Subject<TypeDepense>;
 
   constructor(private _http: HttpClient) {
-    this._subject = new Subject();
+    // this._subject = new Subject();
   }
 
+  /*
   public get subject(): Subject<TypeDepense> {
     return this._subject;
   }
+  */
 
   public enregistreUn(p_sUserId: string, p_oTypeDepense: TypeDepense): Observable<any> {
       return this._http.post(`${environment.urlBackEnd}${environment.urlBackEndTypeDpense}addOne`,

@@ -1,7 +1,15 @@
 table {
     width: 100%;
-  }
-  
-  th.mat-sort-header-sorted {
-    color: black;
-  }
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.matListTitleColor {
+  color: darkcyan;
+}
+
+.espaceTop {
+  margin-top: 15px; 
+}

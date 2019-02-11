@@ -27,6 +27,7 @@ export class DepenseFixeDAO implements InterfaceModeleDAO {
       return this._http.post(`${environment.urlBackEnd}${environment.urlBackEndDepenseFixe}addOne`,
                                                           {'depenseFixe': p_oDepenseFixe, 'userId': p_sUserId})
                                                           .pipe(map((res) => {
+                                                            // this._subject.next(p_oDepenseFixe);
                                                             return res;
                                                           }));
   }
@@ -35,6 +36,7 @@ export class DepenseFixeDAO implements InterfaceModeleDAO {
     return this._http.post(`${environment.urlBackEnd}${environment.urlBackEndDepenseFixe}modifyOne`,
                                                           {'depenseFixe': p_oDepenseFixe, 'userId': p_sUserId})
                                                               .pipe(map((res) => {
+                                                                // this._subject.next(p_oDepenseFixe);
                                                                 return res;
                                                               }));
                                                               return null;
