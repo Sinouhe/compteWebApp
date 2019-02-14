@@ -60,8 +60,8 @@ export class GestionCompteComponent implements OnInit {
 
     this._tabAsso_tab_listDepensesFixes = new Object();
     const date = new Date();
-    this._moisEnCoursEntier = date.getMonth();
-    this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier];
+    this._moisEnCoursEntier = date.getMonth() + 1 ;
+    this._moisEnCoursChaine = this._monthNames[this._moisEnCoursEntier - 1];
     this._anneeEnCours = date.getFullYear();
     this.chargementDesDonnees();
     this.chargeTypeDepense();
@@ -79,6 +79,18 @@ export class GestionCompteComponent implements OnInit {
 
   public get anneeEnCours(): number {
     return this._anneeEnCours;
+  }
+
+  public get moisEnCoursEntier(): number {
+    return this._moisEnCoursEntier;
+  }
+
+  public get moisEnCoursChaine(): string {
+    return this._moisEnCoursChaine;
+  }
+
+  public get monthNames(): string[] {
+    return this._monthNames;
   }
 
   public anneeSuivante() {
